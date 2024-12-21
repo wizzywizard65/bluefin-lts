@@ -1,17 +1,11 @@
 # Achillobator
 Larger, more lethal Bluefin. `bluefin:lts` prototype built on CentOS Stream10.
 
-![image](https://github.com/user-attachments/assets/2e160934-44e6-4aee-b2b8-accb3bcf0a41)
+# Purpose and Status
 
-# Purpose
+This is not a 1:1 recreation, it's a minimal product, see below for more information: 
 
-Experimentation and reckless feeding. This is not a 1:1 recreation, it's a minimal product. 
-
-## Current Status
-
-Working on a base image first before trying the desktop parts. The more people dive in the faster we can get there. 😄
-
-![image](https://github.com/user-attachments/assets/a8142495-68b1-4925-b96c-249fcb15bf48)
+![image](https://github.com/user-attachments/assets/48985776-7a94-4138-bf00-d2df7824047d)
 
 ### Scope and Caveats
 
