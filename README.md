@@ -15,10 +15,11 @@ Working on a base image first before trying the desktop parts. The more people d
 
 ### Scope and Caveats
 
-- Flatpaks must be installed by hand with `just install install-system-flatpaks` - [incoming anaconda PR](https://github.com/rhinstaller/anaconda/pull/6056)
+- Flatpaks must be installed by hand with this workaround: `just -f ~/.just/justfile` on first boot- [incoming anaconda PR](https://github.com/rhinstaller/anaconda/pull/6056)
 - Do not rebase to this from an existing Fedora image, ain't no one testing that. Also the filesystems are going to be different, etc. We recommend a VM for now
 - Not working on nvidia, -dx, etc. at this time as we wait for packages to populate into the EPEL10 repos.
 - The URL _will change_ in the future, this is a temporary image, eventually will be pushed to `ublue-os/bluefin:lts`, but not any time soon.
+- No akmods or other hwe has been added
 
 ## Rationale
 
