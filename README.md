@@ -33,7 +33,7 @@ S slower cadenced OS has a proven use case. With `bootc` being a critical piece 
 To build locally and then spit out a VM: 
 
 ```
-just build-vm 1
+just build
 just build-iso ghcr.io/centos-workstation/achillobator
 ```
 
