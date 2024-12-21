@@ -86,6 +86,43 @@ dnf config-manager --set-disabled copr:copr.fedorainfracloud.org:che:nerd-fonts
 dnf -y --enablerepo copr:copr.fedorainfracloud.org:che:nerd-fonts install \
   nerd-fonts
 
+# UUPD while it doesnt have a COPR
+UUPD_INSTALL=$(mktemp -d)
+curl --retry 3 -Lo $UUPD_INSTALL/uupd.tar.gz https://github.com/ublue-os/uupd/releases/download/v0.5/uupd_Linux_x86_64.tar.gz
+tar xzf $UUPD_INSTALL/uupd.tar.gz -C $UUPD_INSTALL
+cp $UUPD_INSTALL/uupd /usr/bin/uupd
+rm -rf $UUPD_INSTALL
+tee /usr/lib/systemd/system/uupd.service <<EOF
+[Unit]
+Description=Universal Blue Update Oneshot Service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/uupd --log-level debug --json --hw-check
+EOF
+tee /usr/lib/systemd/system/uupd.timer <<EOF
+[Unit]
+Description=Auto Update System Timer For Universal Blue
+Wants=network-online.target
+
+[Timer]
+OnBootSec=20min
+OnUnitInactiveSec=6h
+Persistent=true
+
+[Install]
+WantedBy=timers.target
+EOF
+tee /etc/polkit-1/rules.d/uupd.rules <<EOF
+polkit.addRule(function(action, subject) {
+    if (action.id == "org.freedesktop.systemd1.manage-units" &&
+        action.lookup("unit") == "uupd.service")
+    {
+        return polkit.Result.YES;
+    }
+})
+EOF
+
 # Convince the installer we are in CI
 touch /.dockerenv
 
@@ -107,3 +144,5 @@ systemctl enable dconf-update.service
 systemctl enable brew-setup.service
 systemctl disable mcelog.service
 systemctl enable tailscaled.service
+systemctl enable uupd.timer
+systemctl disable bootc-fetch-apply-updates.timer bootc-fetch-apply-updates.service
