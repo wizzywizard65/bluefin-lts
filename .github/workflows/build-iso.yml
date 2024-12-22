@@ -36,9 +36,8 @@ jobs:
         with:
           # Due to a bug or misconfiguration, we need to temporarily use our own fork
           # https://github.com/osbuild/bootc-image-builder/issues/768
-          bootc_image_builder_image: ghcr.io/centos-workstation/bootc-image-builder:latest
-          config_file: ./image-builder-iso.config.toml
-          type: iso
+          bootc-image-builder-image: ghcr.io/centos-workstation/bootc-image-builder:latest
+          config-file: ./image-builder-iso.config.toml
           image: ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.DEFAULT_TAG }}
 
       - name: Upload Artifacts
@@ -46,4 +45,4 @@ jobs:
         with:
           name: ${{ env.IMAGE_NAME }}-${{ env.DEFAULT_TAG }}-iso
           if-no-files-found: error
-          path: ${{ steps.build.outputs.output_directory }}
+          path: ${{ steps.build.outputs.output-directory }}
