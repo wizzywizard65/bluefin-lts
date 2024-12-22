@@ -1,5 +1,5 @@
 ---
-name: build
+name: Build Image
 on:
   pull_request:
     branches:
@@ -38,8 +38,7 @@ jobs:
       id-token: write
 
     steps:
-      # Checkout push-to-registry action GitHub repository
-      - name: Checkout Push to Registry action
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Setup Just
