@@ -248,3 +248,17 @@ spawn-vm rebuild="0" type="qcow2" ram="6GiB":
       --network-user-mode \
       --vsock=false --pass-ssh-key=false \
       -i ./output/**/*.{{ type }}
+
+customize-iso-build:
+    sudo podman run \
+    --rm -it \
+    --privileged \
+    --pull=newer \
+    --net=host \
+    --security-opt label=type:unconfined_t \
+    -v $(pwd)/image-builder-iso.config.toml \
+    -v $(pwd)/output:/output \
+    -v /var/lib/containers/storage:/var/lib/containers/storage \
+    --entrypoint "" \
+    "${bib_image}" \
+    osbuild --store /store --output-directory /output /output/manifest-iso.json  --export bootiso
