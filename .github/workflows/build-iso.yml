@@ -45,5 +45,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ env.IMAGE_NAME }}-${{ env.DEFAULT_TAG }}-iso
-          path: |
-            ${{ steps.build.outputs.path }}
+          if-no-files-found: error
+          path: ${{ steps.build.outputs.output_directory }}
