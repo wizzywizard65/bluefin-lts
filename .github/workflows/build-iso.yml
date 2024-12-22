@@ -34,6 +34,9 @@ jobs:
         id: build
         uses: rsturla/bootc-image-builder-action@scaffold-repo
         with:
+          # Due to a bug or misconfiguration, we need to temporarily use our own fork
+          # https://github.com/osbuild/bootc-image-builder/issues/768
+          bootc_image_builder_image: ghcr.io/centos-workstation/bootc-image-builder:latest
           config_file: ./image-builder-iso.config.toml
           type: iso
           image: ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.DEFAULT_TAG }}
