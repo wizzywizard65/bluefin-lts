@@ -5,4 +5,4 @@ Comment=Update Bluefin, Flatpaks, Distrobox containers, and more
 Icon=ublue-update
 Categories=ConsoleOnly;System;
 Terminal=true
-Exec=/usr/bin/pkexec bootc update
+Exec=/usr/bin/pkexec uupd --log-level info
