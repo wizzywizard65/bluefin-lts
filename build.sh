@@ -109,6 +109,8 @@ chmod +x /tmp/brew-install
 /tmp/brew-install
 tar --zstd -cvf /usr/share/homebrew.tar.zst /home/linuxbrew
 rm -f /.dockerenv
+# Clean up brew artifacts on the image.
+rm -rf /home/linuxbrew /root/.cache
 
 # Services
 systemctl enable dconf-update.service
