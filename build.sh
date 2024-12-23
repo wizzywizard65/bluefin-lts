@@ -107,7 +107,6 @@ touch /.dockerenv
 curl --retry 3 -Lo /tmp/brew-install https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
 chmod +x /tmp/brew-install
 /tmp/brew-install
-/home/linuxbrew/.linuxbrew/bin/brew install gcc
 tar --zstd -cvf /usr/share/homebrew.tar.zst /home/linuxbrew
 rm -f /.dockerenv
 
