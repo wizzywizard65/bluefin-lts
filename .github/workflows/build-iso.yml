@@ -2,7 +2,6 @@
 name: Build ISO
 
 on:
-  pull_request:
   workflow_dispatch:
     inputs:
       upload-to-cloudflare:
@@ -36,7 +35,7 @@ jobs:
 
       - name: Build ISO
         id: build
-        uses: centos-workstation/bootc-image-builder-action@update-checksum-file-naming
+        uses: centos-workstation/bootc-image-builder-action@main
         with:
           # Due to a bug or misconfiguration, we need to temporarily use our own fork
           # https://github.com/osbuild/bootc-image-builder/issues/768
