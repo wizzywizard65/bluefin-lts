@@ -44,6 +44,17 @@ jobs:
           config-file: ./image-builder-iso.config.toml
           image: ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.DEFAULT_TAG }}
 
+      - name: Rename ISO
+        id: rename
+        env:
+          OUTPUT_PATH: ${{ steps.build.outputs.output-path }}
+          OUTPUT_DIRECTORY: ${{ steps.build.outputs.output-directory }}
+          CHECKSUM_PATH: ${{ steps.build.outputs.checksum-path }}
+          IMAGE_NAME: ${{ env.IMAGE_NAME }}
+        run: |
+          mv $OUTPUT_PATH $OUTPUT_DIRECTORY/$IMAGE_NAME.iso
+          mv $CHECKSUM_PATH $OUTPUT_DIRECTORY/$IMAGE_NAME.iso-CHECKSUM
+
       - name: Upload to Job Artifacts
         if: inputs.upload-to-cloudflare == false
         uses: actions/upload-artifact@v4
