@@ -1,0 +1,79 @@
+---
+name: Build ISO
+
+on:
+  workflow_dispatch:
+    inputs:
+      upload-to-cloudflare:
+        description: "Upload to Cloudflare"
+        required: false
+        default: false
+        type: boolean
+
+env:
+  IMAGE_REGISTRY: "ghcr.io/${{ github.repository_owner }}"
+  IMAGE_NAME: "achillobator"
+  DEFAULT_TAG: "latest"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build ISO
+    runs-on: ubuntu-24.04
+
+    permissions:
+      contents: read
+      packages: read
+      id-token: write
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build ISO
+        id: build
+        uses: centos-workstation/bootc-image-builder-action@main
+        with:
+          # Due to a bug or misconfiguration, we need to temporarily use our own fork
+          # https://github.com/osbuild/bootc-image-builder/issues/768
+          bootc-image-builder-image: ghcr.io/centos-workstation/bootc-image-builder:latest
+          config-file: ./image-builder-iso.config.toml
+          image: ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.DEFAULT_TAG }}
+
+      - name: Rename ISO
+        id: rename
+        env:
+          OUTPUT_PATH: ${{ steps.build.outputs.output-path }}
+          OUTPUT_DIRECTORY: ${{ steps.build.outputs.output-directory }}
+          CHECKSUM_PATH: ${{ steps.build.outputs.checksum-path }}
+          IMAGE_NAME: ${{ env.IMAGE_NAME }}
+        run: |
+          mv $OUTPUT_PATH $OUTPUT_DIRECTORY/$IMAGE_NAME.iso
+          mv $CHECKSUM_PATH $OUTPUT_DIRECTORY/$IMAGE_NAME.iso-CHECKSUM
+
+      - name: Upload to Job Artifacts
+        if: inputs.upload-to-cloudflare == false
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.IMAGE_NAME }}-${{ env.DEFAULT_TAG }}-iso
+          if-no-files-found: error
+          path: ${{ steps.build.outputs.output-directory }}
+
+      - name: Upload to CloudFlare
+        if: inputs.upload-to-cloudflare == true
+        shell: bash
+        env:
+          RCLONE_CONFIG_R2_TYPE: s3
+          RCLONE_CONFIG_R2_PROVIDER: Cloudflare
+          RCLONE_CONFIG_R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          RCLONE_CONFIG_R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          RCLONE_CONFIG_R2_REGION: auto
+          RCLONE_CONFIG_R2_ENDPOINT: ${{ secrets.R2_ENDPOINT }}
+          SOURCE_DIR: ${{ steps.build.outputs.output-directory }}
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y rclone
+          rclone copy $SOURCE_DIR R2:bluefin
