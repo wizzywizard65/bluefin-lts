@@ -52,6 +52,10 @@ fi
 # Fix issues caused by ID no longer being rhel??? (FIXME: check if this is necessary)
 sed -i "s/^EFIDIR=.*/EFIDIR=\"rhel\"/" /usr/sbin/grub2-switch-to-blscfg
 
+# This thing adds "[systemd] Failed Units: (whatever)" to the bashrc startup. We arent using this as a server, we dont need this.
+rm "/usr/share/console-login-helper-messages/profile.sh"
+rm "/etc/profile.d/console-login-helper-messages-profile.sh"
+
 # Additions
 dnf -y install \
     distrobox \
