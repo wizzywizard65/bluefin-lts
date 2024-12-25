@@ -31,7 +31,7 @@ jobs:
     
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
       - name: Build ISO
         id: build
@@ -56,7 +56,7 @@ jobs:
 
       - name: Upload to Job Artifacts
         if: inputs.upload-to-cloudflare == false
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@6f51ac03b9356f520e9adb1b1b7802705f340c2b # v4
         with:
           name: ${{ env.IMAGE_NAME }}-${{ env.DEFAULT_TAG }}-iso
           if-no-files-found: error
