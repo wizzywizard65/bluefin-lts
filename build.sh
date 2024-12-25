@@ -89,17 +89,15 @@ dnf config-manager --set-disabled copr:copr.fedorainfracloud.org:ublue-os:stagin
 dnf -y --enablerepo copr:copr.fedorainfracloud.org:ublue-os:staging install \
   gnome-shell-extension-logo-menu
 
+dnf config-manager --add-repo "https://copr.fedorainfracloud.org/coprs/ublue-os/packages/repo/centos-stream-${MAJOR_VERSION}/ublue-os-packages-centos-stream-${MAJOR_VERSION}.repo"
+dnf config-manager --set-disabled copr:copr.fedorainfracloud.org:ublue-os:packages
+dnf -y --enablerepo copr:copr.fedorainfracloud.org:ublue-os:packages install \
+  uupd
+
 dnf config-manager --add-repo "https://copr.fedorainfracloud.org/coprs/che/nerd-fonts/repo/centos-stream-${MAJOR_VERSION}/che-nerd-fonts-centos-stream-${MAJOR_VERSION}.repo"
 dnf config-manager --set-disabled copr:copr.fedorainfracloud.org:che:nerd-fonts
 dnf -y --enablerepo copr:copr.fedorainfracloud.org:che:nerd-fonts install \
   nerd-fonts
-
-# UUPD while it doesnt have a COPR
-UUPD_INSTALL=$(mktemp -d)
-curl --retry 3 -Lo $UUPD_INSTALL/uupd.tar.gz https://github.com/ublue-os/uupd/releases/download/v0.5/uupd_Linux_x86_64.tar.gz
-tar xzf $UUPD_INSTALL/uupd.tar.gz -C $UUPD_INSTALL
-cp $UUPD_INSTALL/uupd /usr/bin/uupd
-rm -rf $UUPD_INSTALL
 
 # This is required so homebrew works indefinitely.
 # Symlinking it makes it so whenever another GCC version gets released it will break if the user has updated it without- 
