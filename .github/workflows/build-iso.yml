@@ -33,6 +33,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
+      - name: Setup Just
+        uses: extractions/setup-just@dd310ad5a97d8e7b41793f8ef055398d51ad4de6 # v2
+
       - name: Build ISO
         id: build
         uses: centos-workstation/bootc-image-builder-action@main
@@ -42,6 +45,10 @@ jobs:
           bootc-image-builder-image: ghcr.io/centos-workstation/bootc-image-builder:latest
           config-file: ./image-builder-iso.config.toml
           image: ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.DEFAULT_TAG }}
+
+      - name: Patch ISO with our branding
+        run: |
+          just patch-iso-branding 1 ${{ steps.build.outputs.output-path }}
 
       - name: Rename ISO
         id: rename
