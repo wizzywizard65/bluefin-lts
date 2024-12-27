@@ -262,3 +262,21 @@ customize-iso-build:
     --entrypoint "" \
     "${bib_image}" \
     osbuild --store /store --output-directory /output /output/manifest-iso.json  --export bootiso
+
+patch-iso-branding override="0" iso_path="output/bootiso/install.iso":
+    #!/usr/bin/env bash
+    podman run \
+        --rm \
+        -it \
+        --pull=newer \
+        --privileged \
+        -v ./output:/output \
+        -v ./iso_files:/iso_files \
+        registry.fedoraproject.org/fedora:latest \
+        bash -c 'dnf install -y lorax mkksiso && \
+    	mkdir /images && cd /iso_files/product && find . | cpio -c -o | gzip -9cv > /images/product.img && cd / \
+            && mkksiso --add images --volid achillobator-boot /{{ iso_path }} /output/final.iso'
+
+    if [ {{ override }} -ne 0 ] ; then
+        mv output/final.iso {{ iso_path }}
+    fi
