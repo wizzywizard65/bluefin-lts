@@ -88,8 +88,16 @@ dnf -y --enablerepo repo.charm.sh_yum_  install \
 dnf config-manager --add-repo "https://copr.fedorainfracloud.org/coprs/ublue-os/staging/repo/centos-stream-10/ublue-os-staging-centos-stream-10.repo"
 dnf config-manager --set-disabled copr:copr.fedorainfracloud.org:ublue-os:staging
 dnf -y --enablerepo copr:copr.fedorainfracloud.org:ublue-os:staging install \
+  -x bluefin-logos \
   gnome-shell-extension-logo-menu \
-  uupd
+  uupd \
+  bluefin-*
+
+dnf -y --enablerepo copr:copr.fedorainfracloud.org:ublue-os:staging swap centos-logos bluefin-logos
+
+rm -f /usr/share/pixmaps/faces/* || echo "Expected directory deletion to fail"
+mv /usr/share/pixmaps/faces/bluefin/* /usr/share/pixmaps/faces
+rm -rf /usr/share/pixmaps/faces/bluefin
 
 dnf config-manager --add-repo "https://copr.fedorainfracloud.org/coprs/che/nerd-fonts/repo/centos-stream-${MAJOR_VERSION}/che-nerd-fonts-centos-stream-${MAJOR_VERSION}.repo"
 dnf config-manager --set-disabled copr:copr.fedorainfracloud.org:che:nerd-fonts
