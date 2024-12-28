@@ -63,7 +63,8 @@ dnf -y install \
     gnome-shell-extension-appindicator \
     gnome-shell-extension-dash-to-dock \
     gnome-tweaks \
-    tuned-ppd
+    tuned-ppd \
+    systemd-container # uupd depends on machinectl
 
 # Removals
 dnf -y remove \
@@ -88,7 +89,7 @@ dnf config-manager --add-repo "https://copr.fedorainfracloud.org/coprs/ublue-os/
 dnf config-manager --set-disabled copr:copr.fedorainfracloud.org:ublue-os:staging
 dnf -y --enablerepo copr:copr.fedorainfracloud.org:ublue-os:staging install \
   gnome-shell-extension-logo-menu \
-  uupd systemd-container # uupd depends on machinectl
+  uupd
 
 dnf config-manager --add-repo "https://copr.fedorainfracloud.org/coprs/che/nerd-fonts/repo/centos-stream-${MAJOR_VERSION}/che-nerd-fonts-centos-stream-${MAJOR_VERSION}.repo"
 dnf config-manager --set-disabled copr:copr.fedorainfracloud.org:che:nerd-fonts
