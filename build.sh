@@ -59,7 +59,6 @@ QUALIFIED_KERNEL="$(rpm -qa | grep -P 'kernel-(|'"$KERNEL_SUFFIX"'-)(\d+\.\d+\.\
 # Additions
 dnf -y install \
     distrobox \
-    gnome-extensions-app \
     gnome-shell-extension-appindicator \
     gnome-shell-extension-dash-to-dock \
     gnome-tweaks \
