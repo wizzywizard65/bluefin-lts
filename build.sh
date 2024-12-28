@@ -84,14 +84,10 @@ echo -e "gpgcheck=1\ngpgkey=https://repo.charm.sh/yum/gpg.key" | tee -a "/etc/yu
 dnf -y --enablerepo repo.charm.sh_yum_  install \
   glow
 
-dnf config-manager --add-repo "https://copr.fedorainfracloud.org/coprs/ublue-os/staging/repo/centos-stream-${MAJOR_VERSION}/ublue-os-staging-centos-stream-${MAJOR_VERSION}.repo"
+dnf config-manager --add-repo "https://copr.fedorainfracloud.org/coprs/ublue-os/staging/repo/centos-stream-10/ublue-os-staging-centos-stream-10.repo"
 dnf config-manager --set-disabled copr:copr.fedorainfracloud.org:ublue-os:staging
 dnf -y --enablerepo copr:copr.fedorainfracloud.org:ublue-os:staging install \
-  gnome-shell-extension-logo-menu
-
-dnf config-manager --add-repo "https://copr.fedorainfracloud.org/coprs/ublue-os/packages/repo/centos-stream-${MAJOR_VERSION}/ublue-os-packages-centos-stream-${MAJOR_VERSION}.repo"
-dnf config-manager --set-disabled copr:copr.fedorainfracloud.org:ublue-os:packages
-dnf -y --enablerepo copr:copr.fedorainfracloud.org:ublue-os:packages install \
+  gnome-shell-extension-logo-menu \
   uupd systemd-container # uupd depends on machinectl
 
 dnf config-manager --add-repo "https://copr.fedorainfracloud.org/coprs/che/nerd-fonts/repo/centos-stream-${MAJOR_VERSION}/che-nerd-fonts-centos-stream-${MAJOR_VERSION}.repo"
