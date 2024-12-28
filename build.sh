@@ -92,7 +92,7 @@ dnf -y --enablerepo copr:copr.fedorainfracloud.org:ublue-os:staging install \
 dnf config-manager --add-repo "https://copr.fedorainfracloud.org/coprs/ublue-os/packages/repo/centos-stream-${MAJOR_VERSION}/ublue-os-packages-centos-stream-${MAJOR_VERSION}.repo"
 dnf config-manager --set-disabled copr:copr.fedorainfracloud.org:ublue-os:packages
 dnf -y --enablerepo copr:copr.fedorainfracloud.org:ublue-os:packages install \
-  uupd
+  uupd systemd-container # uupd depends on machinectl
 
 dnf config-manager --add-repo "https://copr.fedorainfracloud.org/coprs/che/nerd-fonts/repo/centos-stream-${MAJOR_VERSION}/che-nerd-fonts-centos-stream-${MAJOR_VERSION}.repo"
 dnf config-manager --set-disabled copr:copr.fedorainfracloud.org:che:nerd-fonts
