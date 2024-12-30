@@ -91,6 +91,7 @@ dnf -y --enablerepo copr:copr.fedorainfracloud.org:ublue-os:staging install \
   gnome-shell-extension-logo-menu \
   uupd \
   ublue-motd \
+  ublue-setup-services \
   ublue-fastfetch \
   bluefin-*
 
@@ -131,4 +132,9 @@ systemctl enable brew-setup.service
 systemctl disable mcelog.service
 systemctl enable tailscaled.service
 systemctl enable uupd.timer
+systemctl enable ublue-system-setup.service
+systemctl --global enable ublue-user-setup.service
 systemctl mask bootc-fetch-apply-updates.timer bootc-fetch-apply-updates.service
+
+# Hide Desktop Files. Hidden removes mime associations
+sed -i 's@\[Desktop Entry\]@\[Desktop Entry\]\nHidden=true@g' /usr/share/applications/fish.desktop
