@@ -52,10 +52,6 @@ fi
 # Fix issues caused by ID no longer being rhel??? (FIXME: check if this is necessary)
 sed -i "s/^EFIDIR=.*/EFIDIR=\"rhel\"/" /usr/sbin/grub2-switch-to-blscfg
 
-KERNEL_SUFFIX=""
-QUALIFIED_KERNEL="$(rpm -qa | grep -P 'kernel-(|'"$KERNEL_SUFFIX"'-)(\d+\.\d+\.\d+)' | sed -E 's/kernel-(|'"$KERNEL_SUFFIX"'-)//')"
-/usr/bin/dracut --no-hostonly --kver "$QUALIFIED_KERNEL" --reproducible --zstd -v --add ostree -f "/lib/modules/$QUALIFIED_KERNEL/initramfs.img"
-
 # Additions
 dnf -y install \
     distrobox \
@@ -92,10 +88,11 @@ dnf -y --enablerepo copr:copr.fedorainfracloud.org:ublue-os:staging install \
   uupd \
   ublue-motd \
   ublue-fastfetch \
+  ublue-brew \
   bluefin-*
 
 # Focefully install ujust without powerstat while we don't have it on EPEL
-rpm -ivh /tmp/rpms/ublue-os-just.noarch.rpm --nodeps
+rpm -ivh /tmp/rpms/ublue-os-just.noarch.rpm --nodeps --force
 
 dnf -y --enablerepo copr:copr.fedorainfracloud.org:ublue-os:staging swap centos-logos bluefin-logos
 
@@ -107,6 +104,12 @@ dnf config-manager --add-repo "https://copr.fedorainfracloud.org/coprs/che/nerd-
 dnf config-manager --set-disabled copr:copr.fedorainfracloud.org:che:nerd-fonts
 dnf -y --enablerepo copr:copr.fedorainfracloud.org:che:nerd-fonts install \
   nerd-fonts
+
+# Generate initramfs image after installing Bluefin branding because of Plymouth subpackage
+KERNEL_SUFFIX=""
+QUALIFIED_KERNEL="$(rpm -qa | grep -P 'kernel-(|'"$KERNEL_SUFFIX"'-)(\d+\.\d+\.\d+)' | sed -E 's/kernel-(|'"$KERNEL_SUFFIX"'-)//')"
+/usr/bin/dracut --no-hostonly --kver "$QUALIFIED_KERNEL" --reproducible --zstd -v --add ostree -f "/lib/modules/$QUALIFIED_KERNEL/initramfs.img"
+
 
 # This is required so homebrew works indefinitely.
 # Symlinking it makes it so whenever another GCC version gets released it will break if the user has updated it without- 
