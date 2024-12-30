@@ -1,3 +1,4 @@
+FROM ghcr.io/ublue-os/config:latest@sha256:72c994ea9c6cccf726378afc84ca51598f6dfa93d545e5b7dafc42ce3c04ede9 AS config
 FROM ghcr.io/centos-workstation/main:${MAJOR_VERSION:-latest}
 
 ARG IMAGE_NAME="${IMAGE_NAME:-achillobator}"
@@ -7,7 +8,7 @@ ARG MAJOR_VERSION="${MAJOR_VERSION:-latest}"
 COPY system_files /
 COPY build.sh /tmp/build.sh
 
-RUN ln -sf /run /var/run && \
+RUN --mount=type=bind,from=config,src=/rpms,dst=/tmp/rpms ln -sf /run /var/run && \
     mkdir -p /var/lib/alternatives && \
     /tmp/build.sh && \
     dnf clean all && \

@@ -94,6 +94,9 @@ dnf -y --enablerepo copr:copr.fedorainfracloud.org:ublue-os:staging install \
   ublue-fastfetch \
   bluefin-*
 
+# Focefully install ujust without powerstat while we don't have it on EPEL
+rpm -ivh /tmp/rpms/ublue-os-just.noarch.rpm --nodeps
+
 dnf -y --enablerepo copr:copr.fedorainfracloud.org:ublue-os:staging swap centos-logos bluefin-logos
 
 rm -f /usr/share/pixmaps/faces/* || echo "Expected directory deletion to fail"
