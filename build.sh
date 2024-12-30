@@ -92,7 +92,7 @@ dnf -y --enablerepo copr:copr.fedorainfracloud.org:ublue-os:staging install \
   bluefin-*
 
 # Focefully install ujust without powerstat while we don't have it on EPEL
-rpm -ivh /tmp/rpms/ublue-os-just.noarch.rpm --nodeps
+rpm -ivh /tmp/rpms/ublue-os-just.noarch.rpm --nodeps --force
 
 dnf -y --enablerepo copr:copr.fedorainfracloud.org:ublue-os:staging swap centos-logos bluefin-logos
 
