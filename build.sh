@@ -127,4 +127,4 @@ systemctl enable brew-setup.service
 systemctl disable mcelog.service
 systemctl enable tailscaled.service
 systemctl enable uupd.timer
-systemctl disable bootc-fetch-apply-updates.timer bootc-fetch-apply-updates.service
+systemctl mask bootc-fetch-apply-updates.timer bootc-fetch-apply-updates.service
