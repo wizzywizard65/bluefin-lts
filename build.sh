@@ -91,6 +91,7 @@ dnf -y --enablerepo copr:copr.fedorainfracloud.org:ublue-os:staging install \
   gnome-shell-extension-logo-menu \
   uupd \
   ublue-motd \
+  ublue-fastfetch \
   bluefin-*
 
 dnf -y --enablerepo copr:copr.fedorainfracloud.org:ublue-os:staging swap centos-logos bluefin-logos
