@@ -49,9 +49,6 @@ if [[ -n "${SHA_HEAD_SHORT:-}" ]]; then
   echo "BUILD_ID=\"$SHA_HEAD_SHORT\"" >> /usr/lib/os-release
 fi
 
-# Fix issues caused by ID no longer being rhel??? (FIXME: check if this is necessary)
-sed -i "s/^EFIDIR=.*/EFIDIR=\"rhel\"/" /usr/sbin/grub2-switch-to-blscfg
-
 # Additions
 dnf -y install \
     distrobox \
