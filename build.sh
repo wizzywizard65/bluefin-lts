@@ -87,6 +87,7 @@ dnf -y --enablerepo copr:copr.fedorainfracloud.org:ublue-os:staging install \
   ublue-setup-services \
   ublue-fastfetch \
   ublue-brew \
+  ublue-bling \
   bluefin-*
 
 # Focefully install ujust without powerstat while we don't have it on EPEL
