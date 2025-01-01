@@ -75,7 +75,7 @@ dnf config-manager --add-repo "https://repo.charm.sh/yum/"
 dnf config-manager --set-disabled repo.charm.sh_yum_
 echo -e "gpgcheck=1\ngpgkey=https://repo.charm.sh/yum/gpg.key" | tee -a "/etc/yum.repos.d/repo.charm.sh_yum_.repo"
 dnf -y --enablerepo repo.charm.sh_yum_  install \
-  glow
+  glow gum
 
 dnf config-manager --add-repo "https://copr.fedorainfracloud.org/coprs/ublue-os/staging/repo/centos-stream-10/ublue-os-staging-centos-stream-10.repo"
 dnf config-manager --set-disabled copr:copr.fedorainfracloud.org:ublue-os:staging
