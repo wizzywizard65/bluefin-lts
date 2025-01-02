@@ -49,3 +49,8 @@ qcow2 file is written to the `output/` directory. Username and password are `cen
 - hyperscale sig provides newer kernels, we don't need to stay old old.
 - EPEL will fill in lots of stuff
 - Long lived and boring, we expect even less maintenance than Fedora-based Bluefin
+
+## Other Examples
+
+- [HeliumOS](https://codeberg.org/HeliumOS)
+- Valentin Rothberg - [fedora-bootc-workstation](https://github.com/vrothberg/fedora-bootc-workstation/tree/main)
