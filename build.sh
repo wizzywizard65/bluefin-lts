@@ -55,8 +55,11 @@ dnf -y install \
     gnome-shell-extension-appindicator \
     gnome-shell-extension-dash-to-dock \
     gnome-tweaks \
-    tuned-ppd \
-    systemd-container # uupd depends on machinectl
+    tuned-ppd
+
+# FIXME: Re-add systemd-container when repos are synced up again.
+# This currently downgrades systemd to 256 and breaks polkit because of it.  
+# systemd-container # uupd depends on machinectl
 
 # Removals
 dnf -y remove \
