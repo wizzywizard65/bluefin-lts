@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-set -x
 VEN_ID="$(cat /sys/devices/virtual/dmi/id/chassis_vendor)"
 
 # Ensure custom ptyxis theme is present

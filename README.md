@@ -16,7 +16,7 @@ This is not a 1:1 recreation, it's a minimal product, see below for more informa
 ### Installation and Caveats
 
 1. Snag the ISO: [download.projectbluefin.io/achillobator.iso](https://download.projectbluefin.io/achillobator.iso)
-2. On first boot, install flatpaks: `just install-system-flatpaks`
+2. On first boot, install flatpaks: `ujust install-system-flatpaks`
   
 [Incoming anaconda PR](https://github.com/rhinstaller/anaconda/pull/6056) for the flatpaks, also:
 
