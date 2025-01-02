@@ -94,9 +94,10 @@ SCHEMAS_FILE="/usr/share/glib-2.0/schemas/zz0-bluefin-modifications.gschema.over
 sed -i "s@^picture-uri=.*@picture-uri=file:///usr/share/backgrounds/bluefin/$(date +%m)-bluefin.xml@" "$SCHEMAS_FILE"
 sed -i "s@^picture-uri-dark=.*@picture-uri-dark=file:///usr/share/backgrounds/bluefin/$(date +%m)-bluefin.xml@" "$SCHEMAS_FILE"
 
-
+cp -r /usr/share/ublue-os/just /tmp/just
 # Focefully install ujust without powerstat while we don't have it on EPEL
 rpm -ivh /tmp/rpms/ublue-os-just.noarch.rpm --nodeps --force
+mv /tmp/just/* /usr/share/ublue-os/just
 
 dnf -y --enablerepo copr:copr.fedorainfracloud.org:ublue-os:staging swap centos-logos bluefin-logos
 
