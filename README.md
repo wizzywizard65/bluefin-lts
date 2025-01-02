@@ -17,6 +17,7 @@ This is not a 1:1 recreation, it's a minimal product, see below for more informa
 
 1. Snag the ISO: [download.projectbluefin.io/achillobator.iso](https://download.projectbluefin.io/achillobator.iso)
 2. On first boot, install flatpaks: `ujust install-system-flatpaks`
+3. Automatic updates aren't working, you need to: `sudo bootc upgrade` by hand for now.
   
 [Incoming anaconda PR](https://github.com/rhinstaller/anaconda/pull/6056) for the flatpaks, also:
 
