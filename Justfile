@@ -74,7 +74,7 @@ sudoif command *args:
     }
     sudoif {{ command }} {{ args }}
 
-build $target_image=image_name $tag=default_tag *$labels="":
+build $target_image=image_name $tag=default_tag:
     #!/usr/bin/env bash
 
     # Get Version
@@ -87,14 +87,9 @@ build $target_image=image_name $tag=default_tag *$labels="":
     if [[ -z "$(git status -s)" ]]; then
         BUILD_ARGS+=("--build-arg" "SHA_HEAD_SHORT=$(git rev-parse --short HEAD)")
     fi
-    LABELS=()
-    for label in $labels ; do
-        LABELS+=("--label" $label)
-    done
 
     podman build \
         "${BUILD_ARGS[@]}" \
-        "${LABELS[@]}" \
         --pull=newer \
         --tag "${image_name}:${tag}" \
         .
