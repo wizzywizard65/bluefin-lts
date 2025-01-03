@@ -49,17 +49,19 @@ if [[ -n "${SHA_HEAD_SHORT:-}" ]]; then
   echo "BUILD_ID=\"$SHA_HEAD_SHORT\"" >> /usr/lib/os-release
 fi
 
+# Enable the same compose repos during our build that the centos-bootc image
+# uses during its build.  This avoids downgrading packages in the image that
+# have strict NVR requirements.
+dnf config-manager --set-enabled baseos-compose,appstream-compose
+
 # Additions
 dnf -y install \
     distrobox \
     gnome-shell-extension-appindicator \
     gnome-shell-extension-dash-to-dock \
     gnome-tweaks \
-    tuned-ppd
-
-# FIXME: Re-add systemd-container when repos are synced up again.
-# This currently downgrades systemd to 256 and breaks polkit because of it.  
-# systemd-container # uupd depends on machinectl
+    tuned-ppd \
+    systemd-container # uupd depends on machinectl
 
 # Removals
 dnf -y remove \
@@ -124,6 +126,10 @@ QUALIFIED_KERNEL="$(rpm -qa | grep -P 'kernel-(|'"$KERNEL_SUFFIX"'-)(\d+\.\d+\.\
 # the homebrew package getting updated through our builds.
 # We could get some kind of static binary for GCC but this is the cleanest and most tested alternative. This Sucks.
 dnf -y --setopt=install_weak_deps=False install gcc
+
+# The compose repos we used during the build are point in time repos that are
+# not updated, so we don't want to leave them enabled.
+dnf config-manager --set-disabled baseos-compose,appstream-compose
 
 # Homebrew
 touch /.dockerenv
