@@ -93,10 +93,9 @@ dnf -y --enablerepo copr:copr.fedorainfracloud.org:ublue-os:staging install \
   ublue-bling \
   bluefin-*
 
-SCHEMAS_FILE="/usr/share/glib-2.0/schemas/zz0-bluefin-modifications.gschema.override"
-sed -i "s@^picture-uri=.*@picture-uri=file:///usr/share/backgrounds/bluefin/$(date +%m)-bluefin.xml@" "$SCHEMAS_FILE"
-sed -i "s@^picture-uri-dark=.*@picture-uri-dark=file:///usr/share/backgrounds/bluefin/$(date +%m)-bluefin.xml@" "$SCHEMAS_FILE"
-glib-compile-schemas /usr/share/glib-2.0/schemas &>/dev/null
+HARDCODED_RPM_MONTH="12"
+sed -i "/picture-uri/ s/$HARDCODED_RPM_MONTH/$(date +%m)/" "/usr/share/glib-2.0/schemas/zz0-bluefin-modifications.gschema.override"
+glib-compile-schemas /usr/share/glib-2.0/schemas
 
 cp -r /usr/share/ublue-os/just /tmp/just
 # Focefully install ujust without powerstat while we don't have it on EPEL
