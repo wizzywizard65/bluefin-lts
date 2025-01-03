@@ -61,6 +61,8 @@ dnf -y install \
     gnome-shell-extension-dash-to-dock \
     gnome-tweaks \
     tuned-ppd \
+    fpaste \
+    pipx \
     systemd-container # uupd depends on machinectl
 
 # Removals
