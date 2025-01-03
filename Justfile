@@ -74,7 +74,7 @@ sudoif command *args:
     }
     sudoif {{ command }} {{ args }}
 
-build $target_image=image_name $tag=default_tag:
+build $target_image=image_name $tag=default_tag *$labels="":
     #!/usr/bin/env bash
 
     # Get Version
@@ -87,14 +87,10 @@ build $target_image=image_name $tag=default_tag:
     if [[ -z "$(git status -s)" ]]; then
         BUILD_ARGS+=("--build-arg" "SHA_HEAD_SHORT=$(git rev-parse --short HEAD)")
     fi
-
     LABELS=()
-    LABELS+=("--label" "org.opencontainers.image.title=${image_name}")
-    LABELS+=("--label" "org.opencontainers.image.version=${ver}")
-    # LABELS+=("--label" "ostree.linux=${kernel_release}")
-    LABELS+=("--label" "io.artifacthub.package.readme-url=https://raw.githubusercontent.com/ublue-os/bluefin/bluefin/README.md")
-    LABELS+=("--label" "io.artifacthub.package.logo-url=https://avatars.githubusercontent.com/u/120078124?s=200&v=4")
-    LABELS+=("--label" "org.opencontainers.image.description=CentOS based images")
+    for label in $labels ; do
+        LABELS+=("--label" $label)
+    done
 
     podman build \
         "${BUILD_ARGS[@]}" \
