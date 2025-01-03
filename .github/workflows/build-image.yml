@@ -54,7 +54,12 @@ jobs:
       
       - name: Get current date
         id: date
-        run: echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
+        run: |
+          # Should generate a timestamp like what is defined on the ArtifactHub documentation
+          # E.G: 2022-02-08T15:38:15Z'
+          # https://artifacthub.io/docs/topics/repositories/container-images/
+          # https://linux.die.net/man/1/date
+          echo "date=$(date -u +%Y\-%m\-%d\T%H\:%M\:%S\Z)" >> $GITHUB_OUTPUT
 
       - name: Image Metadata
         uses: docker/metadata-action@369eb591f429131d6889c46b94e711f089e6ca96 # v5
@@ -78,12 +83,11 @@ jobs:
             org.opencontainers.image.url=https://projectbluefin.io
             org.opencontainers.image.vendor=${{ github.repository_owner }}
             org.opencontainers.image.version=${{ env.CENTOS_VERSION }}
-            io.artifacthub.package.category=bootc-images
             io.artifacthub.package.deprecated=false
             io.artifacthub.package.keywords=bootc,centos,bluefin,ublue,universal-blue
             io.artifacthub.package.license=Apache-2.0
             io.artifacthub.package.logo-url=https://avatars.githubusercontent.com/u/120078124?s=200&v=4
-            io.artifacthub.package.maintainers=[{"name":"tulilirockz","email":"tulilirockz@outlook.com"},{"name":"castrojo", "email": "jorge.castro@gmail.com"}]
+            io.artifacthub.package.maintainers=[{\"name\":\"tulilirockz\",\"email\":\"tulilirockz@outlook.com\"},{\"name\":\"castrojo\", \"email\": \"jorge.castro@gmail.com\"}]
             io.artifacthub.package.prerelease=true
             containers.bootc=1
           sep-tags: " "
