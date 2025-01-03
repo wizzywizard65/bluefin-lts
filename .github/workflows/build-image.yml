@@ -62,9 +62,10 @@ jobs:
         with:
           tags: |
             type=raw,value=latest
-            type=raw,value={{date 'YYYYMMDD'}},enable={{is_default_branch}}
-            type=raw,value=${{ env.CENTOS_VERSION }},enable={{is_default_branch}}
-            type=raw,value=${{ env.CENTOS_VERSION }}.{{date 'YYYYMMDD'}},enable={{is_default_branch}}
+            type=raw,value=latest.{{date 'YYYYMMDD'}}
+            type=raw,value={{date 'YYYYMMDD'}}
+            type=raw,value=${{ env.CENTOS_VERSION }}
+            type=raw,value=${{ env.CENTOS_VERSION }}.{{date 'YYYYMMDD'}}
             type=sha,enable=${{ github.event_name == 'pull_request' }}
             type=ref,event=pr
           labels: |
@@ -84,8 +85,8 @@ jobs:
             io.artifacthub.package.logo-url=https://avatars.githubusercontent.com/u/120078124?s=200&v=4
             io.artifacthub.package.maintainers=[{"name":"tulilirockz","email":"tulilirockz@outlook.com"},{"name":"castrojo", "email": "jorge.castro@gmail.com"}]
             io.artifacthub.package.prerelease=true
+            containers.bootc=1
           sep-tags: " "
-          sep-labels: " "
           sep-annotations: " "
 
       - name: Build Image
@@ -93,7 +94,7 @@ jobs:
         shell: bash
         run: |
           just=$(which just)
-          sudo $just build "${IMAGE_NAME}" "${DEFAULT_TAG}" "${{ steps.metadata.outputs.labels }}"
+          sudo $just build "${IMAGE_NAME}" "${DEFAULT_TAG}"
 
       # Reprocess raw-img using rechunker which will delete it
       - name: Run Rechunker
@@ -105,25 +106,19 @@ jobs:
           prev-ref: "${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.DEFAULT_TAG }}"
           skip_compression: true
           version: ${{ env.CENTOS_VERSION }}
+          labels: ${{ steps.metadata.outputs.labels }} # Rechunk strips out all the labels during build, this needs to be reapplied here with newline separator
 
       - name: Load in podman and tag
         run: |
           IMAGE=$(podman pull ${{ steps.rechunk.outputs.ref }})
-          sudo rm -rf ${{ steps.rechunk.outputs.output }} || echo "Somehow failed this"
+          sudo rm -rf ${{ steps.rechunk.outputs.output }}
           for tag in ${{ steps.metadata.outputs.tags }}; do
             podman tag $IMAGE ${{ env.IMAGE_NAME }}:$tag
           done
 
-      # Workaround bug where capital letters in your GitHub username make it impossible to push to GHCR.
-      # https://github.com/macbre/push-to-ghcr/issues/12
-      - name: Lowercase Registry
-        id: registry_case
-        uses: ASzc/change-string-case-action@d0603cd0a7dd490be678164909f65c7737470a7f # v6
-        with:
-          string: ${{ env.IMAGE_REGISTRY }}
-
       - name: Login to GitHub Container Registry
         uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3
+        if: github.event_name != 'pull_request'
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -135,7 +130,7 @@ jobs:
         if: github.event_name != 'pull_request'
         id: push
         with:
-          registry: ${{ steps.registry_case.outputs.lowercase }}
+          registry: ${{ env.IMAGE_REGISTRY }}
           image: ${{ env.IMAGE_NAME }}
           tags: ${{ steps.metadata.outputs.tags }}
 
