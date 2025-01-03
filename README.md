@@ -1,4 +1,5 @@
-# Achillobator
+# Bluefin LTS (Alpha)
+*Achillobator giganticus*
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/13d42ded3cf54250a71ad05aca7d5961)](https://app.codacy.com/gh/centos-workstation/achillobator/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 [![Build Image](https://github.com/centos-workstation/achillobator/actions/workflows/build-image.yml/badge.svg)](https://github.com/centos-workstation/achillobator/actions/workflows/build-image.yml)
