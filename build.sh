@@ -93,9 +93,8 @@ dnf -y --enablerepo copr:copr.fedorainfracloud.org:ublue-os:staging install \
   ublue-bling \
   bluefin-*
 
-SCHEMAS_FILE="/usr/share/glib-2.0/schemas/zz0-bluefin-modifications.gschema.override"
 HARDCODED_RPM_MONTH="12"
-sed -i "/picture-uri/ s/$HARDCODED_RPM_MONTH/$(date +%m)/" "$SCHEMAS_FILE"
+sed -i "/picture-uri/ s/$HARDCODED_RPM_MONTH/$(date +%m)/" "/usr/share/glib-2.0/schemas/zz0-bluefin-modifications.gschema.override"
 glib-compile-schemas /usr/share/glib-2.0/schemas
 
 cp -r /usr/share/ublue-os/just /tmp/just
