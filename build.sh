@@ -62,6 +62,7 @@ dnf -y install \
     gnome-tweaks \
     tuned-ppd \
     fpaste \
+    distribution-gpg-keys \
     pipx \
     systemd-container # uupd depends on machinectl
 
