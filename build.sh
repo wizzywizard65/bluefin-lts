@@ -63,7 +63,6 @@ dnf -y install \
     tuned-ppd \
     fpaste \
     distribution-gpg-keys \
-    pipx \
     systemd-container # uupd depends on machinectl
 
 # Removals
