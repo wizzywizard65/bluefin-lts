@@ -23,7 +23,9 @@ This is not a 1:1 recreation, it's a minimal product, see below for more informa
 [Incoming anaconda PR](https://github.com/rhinstaller/anaconda/pull/6056) for the flatpaks, also:
 
 - Do not rebase to this from an existing Fedora image, ain't no one testing that. Also the filesystems are going to be different, etc. We recommend a VM for now
-- Not working on nvidia, -dx, etc. at this time as we wait for packages to populate into the EPEL10 repos.
+- Some packages are missing until they get added to the EPEL10 repos.
+  - Developer tools are included, -dx split will come later
+  - No nvidia builds until Nvidia publishes EL10 drivers
 - The URL _will change_ in the future, this is a temporary image, eventually will be pushed to `ublue-os/bluefin:lts`, but not any time soon.
 - No akmods or other hwe has been added
 
