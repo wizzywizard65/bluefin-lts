@@ -82,15 +82,18 @@ dnf config-manager --add-repo "https://copr.fedorainfracloud.org/coprs/ublue-os/
 dnf config-manager --set-disabled copr:copr.fedorainfracloud.org:ublue-os:staging
 dnf -y --enablerepo copr:copr.fedorainfracloud.org:ublue-os:staging install \
   -x bluefin-logos \
+  fzf \
   glow \
   gnome-shell-extension-logo-menu \
   gum \
+  jetbrains-mono-fonts-all \
   uupd \
   ublue-motd \
   ublue-setup-services \
   ublue-fastfetch \
   ublue-brew \
   ublue-bling \
+  wl-clipboard \
   bluefin-*
 
 HARDCODED_RPM_MONTH="12"
