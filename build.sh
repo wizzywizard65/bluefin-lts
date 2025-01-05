@@ -96,6 +96,8 @@ dnf -y --enablerepo copr:copr.fedorainfracloud.org:ublue-os:staging install \
   wl-clipboard \
   bluefin-*
 
+sed -i "s/󰣛//g" /usr/share/ublue-os/fastfetch.jsonc
+
 HARDCODED_RPM_MONTH="12"
 sed -i "/picture-uri/ s/$HARDCODED_RPM_MONTH/$(date +%m)/" "/usr/share/glib-2.0/schemas/zz0-bluefin-modifications.gschema.override"
 glib-compile-schemas /usr/share/glib-2.0/schemas
