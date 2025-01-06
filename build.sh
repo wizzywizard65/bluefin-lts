@@ -73,7 +73,7 @@ dnf -y remove \
 dnf -y --enablerepo epel-testing install \
   gnome-shell-extension-blur-my-shell fastfetch just
 
-dnf config-manager --add-repo https://pkgs.tailscale.com/stable/centos/9/tailscale.repo
+dnf config-manager --add-repo https://pkgs.tailscale.com/stable/centos/10/tailscale.repo
 dnf config-manager --set-disabled tailscale-stable
 dnf -y --enablerepo tailscale-stable install \
   tailscale
