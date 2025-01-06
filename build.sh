@@ -56,10 +56,10 @@ dnf config-manager --set-enabled baseos-compose,appstream-compose
 
 # Additions
 dnf -y install \
+    -x gnome-extensions-app \
     distrobox \
     gnome-shell-extension-appindicator \
     gnome-shell-extension-dash-to-dock \
-    gnome-tweaks \
     tuned-ppd \
     fpaste \
     distribution-gpg-keys \
