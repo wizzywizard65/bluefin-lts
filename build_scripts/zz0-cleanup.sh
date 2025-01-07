@@ -13,3 +13,5 @@ rm -rf /var/!(cache)
 rm -rf /var/cache/!(rpm-ostree)
 rm -rf /var/tmp
 dnf clean all
+
+ls -lah /var/lib/alternatives
