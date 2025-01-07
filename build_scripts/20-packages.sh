@@ -66,10 +66,3 @@ dnf -y --enablerepo copr:copr.fedorainfracloud.org:che:nerd-fonts install \
 # the homebrew package getting updated through our builds.
 # We could get some kind of static binary for GCC but this is the cleanest and most tested alternative. This Sucks.
 dnf -y --setopt=install_weak_deps=False install gcc
-
-# VSCode on the base image!
-dnf config-manager --add-repo "https://packages.microsoft.com/yumrepos/vscode"
-dnf config-manager --set-disabled packages.microsoft.com_yumrepos_vscode
-# TODO: Add the key from https://packages.microsoft.com/keys/microsoft.asc somehow
-# rpm --import https://packages.microsoft.com/keys/microsoft.asc fails for some reason.
-dnf -y --enablerepo packages.microsoft.com_yumrepos_vscode --nogpgcheck install code
