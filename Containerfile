@@ -7,12 +7,6 @@ ARG MAJOR_VERSION="${MAJOR_VERSION:-latest}"
 ARG SHA_HEAD_SHORT="${SHA_HEAD_SHORT:-}"
 
 COPY system_files /
-COPY build.sh /tmp/build.sh
+COPY build_scripts /var/tmp/build_scripts
 
-RUN --mount=type=bind,from=config,src=/rpms,dst=/tmp/rpms ln -sf /run /var/run && \
-    mkdir -p /var/lib/alternatives && \
-    /tmp/build.sh && \
-    dnf clean all && \
-    ostree container commit 
-
-RUN bootc container lint
+RUN --mount=type=tmpfs,dst=/tmp --mount=type=bind,from=config,src=/rpms,dst=/tmp/rpms /var/tmp/build_scripts/build.sh
