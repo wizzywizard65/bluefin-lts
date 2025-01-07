@@ -12,6 +12,8 @@ for script in /var/tmp/build_scripts/*-*.sh; do
 	printf "::endgroup::\n"
 done
 
+set -x
+
 # Ensure these get run at the _end_ of the build no matter what
 ostree container commit # Maybe will not be necessary in the future. Reassess in a few years.
 bootc container lint

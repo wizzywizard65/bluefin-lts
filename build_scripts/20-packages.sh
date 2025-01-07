@@ -2,17 +2,15 @@
 
 set -xeuo pipefail
 
-MAJOR_VERSION=$(bash -c 'source /usr/lib/os-release ; echo $VERSION_ID')
+MAJOR_VERSION="$(sh -c '. /usr/lib/os-release ; echo $VERSION_ID')"
 
-# Removals
 dnf -y remove \
 	subscription-manager
 
-# Additions
 dnf -y install \
 	-x gnome-extensions-app \
-	distrobox \
 	gnome-shell-extension-{appindicator,dash-to-dock,blur-my-shell} \
+	distrobox \
 	tuned-ppd \
 	fpaste \
 	distribution-gpg-keys \
@@ -44,12 +42,10 @@ dnf -y --enablerepo copr:copr.fedorainfracloud.org:ublue-os:staging install \
 	ublue-bling \
 	bluefin-*
 
-dnf -y --enablerepo copr:copr.fedorainfracloud.org:ublue-os:staging
-uupd &&
+dnf -y --enablerepo "copr:copr.fedorainfracloud.org:ublue-os:staging" uupd &&
 	dnf -y install systemd-container
 
-dnf -y --enablerepo copr:copr.fedorainfracloud.org:ublue-os:staging \
-	ublue-setup-services &&
+dnf -y --enablerepo "copr:copr.fedorainfracloud.org:ublue-os:staging" ublue-setup-services &&
 	systemctl enable check-sb-key.service
 
 dnf -y --enablerepo copr:copr.fedorainfracloud.org:ublue-os:staging swap \

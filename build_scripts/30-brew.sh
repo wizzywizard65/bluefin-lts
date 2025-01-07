@@ -2,6 +2,12 @@
 
 set -xeuo pipefail
 
+# This is required so homebrew works indefinitely.
+# Symlinking it makes it so whenever another GCC version gets released it will break if the user has updated it without-
+# the homebrew package getting updated through our builds.
+# We could get some kind of static binary for GCC but this is the cleanest and most tested alternative. This Sucks.
+dnf -y --setopt=install_weak_deps=False install gcc
+
 mkdir -p /var/home
 # Homebrew
 touch /.dockerenv

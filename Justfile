@@ -271,3 +271,9 @@ patch-iso-branding override="0" iso_path="output/bootiso/install.iso":
     if [ {{ override }} -ne 0 ] ; then
         mv output/final.iso {{ iso_path }}
     fi
+
+lint:
+    /usr/bin/find . -iname "*.sh" -type f -exec shellcheck "{}" ';'
+
+format:
+    /usr/bin/find . -iname "*.sh" -type f -exec shfmt --write "{}" ';'
