@@ -22,4 +22,5 @@ dnf -y --enablerepo docker-ce-stable install \
   systemctl enable docker
 
 
-dnf -y group install "Virtualization Host"
+dnf -y group install "Virtualization Hypervisor"
+dnf -y group install "Virtualization Tools"
