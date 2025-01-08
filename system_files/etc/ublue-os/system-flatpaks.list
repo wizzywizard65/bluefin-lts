@@ -29,3 +29,4 @@ org.mozilla.Thunderbird
 page.tesk.Refine
 runtime/org.gtk.Gtk3theme.adw-gtk3
 runtime/org.gtk.Gtk3theme.adw-gtk3-dark
+io.podman_desktop.PodmanDesktop
