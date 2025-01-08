@@ -19,7 +19,7 @@ dnf -y --enablerepo docker-ce-stable install \
   containerd.io \
   docker-buildx-plugin \
   docker-compose-plugin && \
-  systemctl enable --now docker
+  systemctl enable docker
 
 
 dnf -y group install "Virtualization Host"
