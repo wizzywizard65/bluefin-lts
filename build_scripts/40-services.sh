@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -xeuo pipefail
+
 systemctl enable rpm-ostree-countme.service
 systemctl --global enable podman-auto-update.timer
 systemctl enable rpm-ostree-countme.service
