@@ -18,9 +18,6 @@ dnf -y --enablerepo docker-ce-stable install \
   docker-ce-cli \
   containerd.io \
   docker-buildx-plugin \
-  docker-compose-plugin && \
-  systemctl enable docker
+  docker-compose-plugin
 
-
-dnf -y group install "Virtualization Hypervisor"
-dnf -y group install "Virtualization Tools"
+systemctl enable docker
