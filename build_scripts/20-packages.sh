@@ -42,10 +42,10 @@ dnf -y --enablerepo copr:copr.fedorainfracloud.org:ublue-os:staging install \
 	ublue-bling \
 	bluefin-*
 
-dnf -y --enablerepo "copr:copr.fedorainfracloud.org:ublue-os:staging" uupd &&
+dnf -y --enablerepo "copr:copr.fedorainfracloud.org:ublue-os:staging" install uupd &&
 	dnf -y install systemd-container
 
-dnf -y --enablerepo "copr:copr.fedorainfracloud.org:ublue-os:staging" ublue-setup-services &&
+dnf -y --enablerepo "copr:copr.fedorainfracloud.org:ublue-os:staging" install ublue-setup-services &&
 	systemctl enable check-sb-key.service
 
 dnf -y --enablerepo copr:copr.fedorainfracloud.org:ublue-os:staging swap \
