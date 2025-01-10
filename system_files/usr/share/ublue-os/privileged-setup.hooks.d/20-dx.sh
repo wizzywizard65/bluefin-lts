@@ -14,12 +14,10 @@ append_group docker
 
 # We dont have incus on the image yet
 # append_group incus-admin
-# append_group libvirt
-# usermod -aG libvirt $user
 # usermod -aG incus-admin $user
 
-wheelarray=($(getent group wheel | cut -d ":" -f 4 | tr  ',' '\n'))
-for user in $wheelarray
+mapfile -t wheelarray < <(getent group wheel | cut -d ":" -f 4 | tr  ',' '\n')
+for user in "${wheelarray[@]}"
 do
-  usermod -aG docker $user
+  usermod -aG docker "$user"
 done
