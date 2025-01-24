@@ -8,7 +8,7 @@ dnf -y remove \
 	subscription-manager
 
 dnf -y install \
-	-x distrobox \
+	distrobox \
         distribution-gpg-keys \
 	fastfetch \
 	fpaste \
