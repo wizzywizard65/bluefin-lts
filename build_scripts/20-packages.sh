@@ -8,14 +8,15 @@ dnf -y remove \
 	subscription-manager
 
 dnf -y install \
-	-x gnome-extensions-app \
-	gnome-shell-extension-{appindicator,dash-to-dock,blur-my-shell} \
-	distrobox \
-	tuned-ppd \
-	fpaste \
-	distribution-gpg-keys \
+	-x distrobox \
+        distribution-gpg-keys \
 	fastfetch \
-	just
+	fpaste \
+	gnome-extensions-app \
+	gnome-shell-extension-{appindicator,dash-to-dock,blur-my-shell} \
+        just \
+	powertop \ 
+	tuned-ppd \
 
 # Everything that depends on external repositories should be after this.
 # Make sure to set them as disabled and enable them only when you are going to use their packages.
