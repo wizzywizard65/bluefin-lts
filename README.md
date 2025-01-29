@@ -12,9 +12,15 @@ Larger, more lethal [Bluefin](https://projectbluefin.io). `bluefin:lts` is built
 
 ![image](https://github.com/user-attachments/assets/48985776-7a94-4138-bf00-d2df7824047d)
 
+### Existing Users
+
+If you used the previous Achillobator image you _must_ rebase to the new image:
+
+    sudo bootc rebase ghcr.io/ublue-os/bluefin:lts
+
 ### Installation and Caveats
 
-1. Snag the ISO: [download.projectbluefin.io/achillobator.iso](https://download.projectbluefin.io/achillobator.iso)
+1. Snag the ISO: [Soon]
 2. On first boot, install flatpaks: `ujust install-system-flatpaks`
 3. Automatic updates aren't working, you need to: `sudo bootc upgrade` by hand for now.
   
