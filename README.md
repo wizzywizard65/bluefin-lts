@@ -14,7 +14,9 @@ Larger, more lethal [Bluefin](https://projectbluefin.io). `bluefin:lts` is built
 
 ### Existing Users
 
-If you used the previous Achillobator image you _must_ rebase to the new image:
+If you used the previous **Achillobator prorotype image** you _must_ rebase to the new image. 
+
+**DO NOT REBASE TO THIS IMAGE FROM AN EXISTING BLUEFIN, AURORA, OR BAZZITE SYSTEM**
 
     sudo bootc rebase ghcr.io/ublue-os/bluefin:lts
 
