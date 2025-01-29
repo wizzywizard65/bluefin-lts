@@ -68,8 +68,7 @@ jobs:
         with:
           tags: |
             type=raw,value=lts
-            type=raw,value=lts.{{date 'YYYYMMDD'}}
-            type=raw,value={{date 'YYYYMMDD'}}
+            type=raw,value=lts-{{date 'YYYYMMDD'}}
             type=raw,value=${{ env.CENTOS_VERSION }}
             type=raw,value=${{ env.CENTOS_VERSION }}.{{date 'YYYYMMDD'}}
             type=sha,enable=${{ github.event_name == 'pull_request' }}
