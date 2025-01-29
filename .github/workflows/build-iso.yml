@@ -12,7 +12,7 @@ on:
 
 env:
   IMAGE_REGISTRY: "ghcr.io/${{ github.repository_owner }}"
-  IMAGE_NAME: "achillobator"
+  IMAGE_NAME: "bluefin-lts"
   DEFAULT_TAG: "latest"
 
 concurrency:
