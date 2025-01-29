@@ -4,13 +4,11 @@
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/13d42ded3cf54250a71ad05aca7d5961)](https://app.codacy.com/gh/ublue-os/bluefin-lts/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 [![Build Image](https://github.com/ublue-os/bluefin-lts/actions/workflows/build-image.yml/badge.svg)](https://github.com/ublue-os/bluefin-lts/actions/workflows/build-image.yml)
 
-Larger, more lethal [Bluefin](https://projectbluefin.io). `bluefin:lts` prototype built on CentOS Stream10.
+Larger, more lethal [Bluefin](https://projectbluefin.io). `bluefin:lts` is built on CentOS Stream10.
 
 ![image](https://github.com/user-attachments/assets/2e160934-44e6-4aee-b2b8-accb3bcf0a41)
 
 # Purpose and Status
-
-This is not a 1:1 recreation, it's a minimal product, see below for more information: 
 
 ![image](https://github.com/user-attachments/assets/48985776-7a94-4138-bf00-d2df7824047d)
 
@@ -26,7 +24,6 @@ This is not a 1:1 recreation, it's a minimal product, see below for more informa
 - Some packages are missing until they get added to the EPEL10 repos.
   - Developer tools are included, -dx split will come later
   - No nvidia builds until Nvidia publishes EL10 drivers
-- The URL _will change_ in the future, this is a temporary image, eventually will be pushed to `ublue-os/bluefin:lts`, but not any time soon.
 - No akmods or other hwe has been added
 
 ## Rationale
