@@ -95,7 +95,7 @@ def get_images(target: str):
     matrix = IMAGE_MATRIX_LATEST
 
     for experience, image_flavor in product(*matrix.values()):
-        img = "bluefin-lts"
+        img = "bluefin"
 
         if image_flavor != "main":
             img += "-"
