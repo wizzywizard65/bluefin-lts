@@ -1,4 +1,4 @@
-# 󱍢 Welcome to Achillobator
+# 󱍢 Welcome to Bluefin LTS
 
 󱋩 `%IMAGE_NAME%:%IMAGE_TAG%`
 

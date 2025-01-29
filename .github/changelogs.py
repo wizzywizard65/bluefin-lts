@@ -6,7 +6,7 @@ from typing import Any
 import re
 from collections import defaultdict
 
-REGISTRY = "docker://ghcr.io/centos-workstation/"
+REGISTRY = "docker://ghcr.io/ublue-os/"
 
 IMAGE_MATRIX_LATEST = {
     "experience": ["base"],
@@ -27,13 +27,13 @@ COMMON_PAT = "### All Images\n| | Name | Previous | New |\n| --- | --- | --- | -
 OTHER_NAMES = {
     "base": "### Base Images\n| | Name | Previous | New |\n| --- | --- | --- | --- |{changes}\n\n",
     "dx": "### [Dev Experience Images](https://docs.projectbluefin.io/achillobator)\n| | Name | Previous | New |\n| --- | --- | --- | --- |{changes}\n\n",
-    "gnome": "### [Achillobator Images](https://projectbluefin.io/)\n| | Name | Previous | New |\n| --- | --- | --- | --- |{changes}\n\n",
+    "gnome": "### [Bluefin LTS Images](https://projectbluefin.io/)\n| | Name | Previous | New |\n| --- | --- | --- | --- |{changes}\n\n",
     "nvidia": "### Nvidia Images\n| | Name | Previous | New |\n| --- | --- | --- | --- |{changes}\n\n",
     "hwe": "### HWE Images\n| | Name | Previous | New |\n| --- | --- | --- | --- |{changes}\n\n",
 }
 
 COMMITS_FORMAT = "### Commits\n| Hash | Subject |\n| --- | --- |{commits}\n\n"
-COMMIT_FORMAT = "\n| **[{short}](https://github.com/centos-workstation/bluefin/commit/{githash})** | {subject} |"
+COMMIT_FORMAT = "\n| **[{short}](https://github.com/ublue-os/bluefin-lts/commit/{githash})** | {subject} |"
 
 CHANGELOG_TITLE = "{tag}: {pretty}"
 CHANGELOG_FORMAT = """\
@@ -66,10 +66,10 @@ For current users, type the following to rebase to this version:
 IMAGE_NAME=$(jq -r '.["image-name"]' < /usr/share/ublue-os/image-info.json)
 
 # For this Stream
-sudo bootc switch --enforce-container-sigpolicy ghcr.io/centos-workstation/$IMAGE_NAME:{target}
+sudo bootc switch --enforce-container-sigpolicy ghcr.io/ublue-os/$IMAGE_NAME:{target}
 
 # For this Specific Image:
-sudo bootc switch --enforce-container-sigpolicy ghcr.io/centos-workstation/$IMAGE_NAME:{curr}
+sudo bootc switch --enforce-container-sigpolicy ghcr.io/ublue-os/$IMAGE_NAME:{curr}
 ```
 
 ### Documentation
@@ -95,7 +95,7 @@ def get_images(target: str):
     matrix = IMAGE_MATRIX_LATEST
 
     for experience, image_flavor in product(*matrix.values()):
-        img = "achillobator"
+        img = "bluefin-lts"
 
         if image_flavor != "main":
             img += "-"

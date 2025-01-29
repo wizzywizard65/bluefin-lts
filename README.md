@@ -1,8 +1,8 @@
 # Bluefin LTS (Alpha)
 *Achillobator giganticus*
 
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/13d42ded3cf54250a71ad05aca7d5961)](https://app.codacy.com/gh/centos-workstation/achillobator/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
-[![Build Image](https://github.com/centos-workstation/achillobator/actions/workflows/build-image.yml/badge.svg)](https://github.com/centos-workstation/achillobator/actions/workflows/build-image.yml)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/13d42ded3cf54250a71ad05aca7d5961)](https://app.codacy.com/gh/ublue-os/bluefin-lts/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+[![Build Image](https://github.com/ublue-os/bluefin-lts/actions/workflows/build-image.yml/badge.svg)](https://github.com/ublue-os/bluefin-lts/actions/workflows/build-image.yml)
 
 Larger, more lethal [Bluefin](https://projectbluefin.io). `bluefin:lts` prototype built on CentOS Stream10.
 
@@ -43,7 +43,7 @@ To build locally and then spit out a VM:
 
 ```
 just build
-just build-iso ghcr.io/centos-workstation/achillobator:latest
+just build-iso ghcr.io/ublue-os/bluefin-lts:latest
 ```
 
 qcow2 file is written to the `output/` directory. Username and password are `centos`/`centos`

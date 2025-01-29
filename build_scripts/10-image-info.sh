@@ -23,8 +23,8 @@ IMAGE_PRETTY_NAME="Achillobator"
 IMAGE_LIKE="rhel fedora"
 HOME_URL="https://projectbluefin.io"
 DOCUMENTATION_URL="https://docs.projectbluefin.io"
-SUPPORT_URL="https://github.com/centos-workstation/achillobator/issues/"
-BUG_SUPPORT_URL="https://github.com/centos-workstation/achillobator/issues/"
+SUPPORT_URL="https://github.com/ublue-os/bluefin-lts/issues/"
+BUG_SUPPORT_URL="https://github.com/ublue-os/bluefin-lts/issues/"
 CODE_NAME="Dromaeosauridae"
 
 # OS Release File (changed in order with upstream)
