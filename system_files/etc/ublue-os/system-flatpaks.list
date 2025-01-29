@@ -30,3 +30,5 @@ page.tesk.Refine
 runtime/org.gtk.Gtk3theme.adw-gtk3
 runtime/org.gtk.Gtk3theme.adw-gtk3-dark
 io.podman_desktop.PodmanDesktop
+io.github.pwr_solaar.solaar
+io.github.input_leap.input-leap
