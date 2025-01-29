@@ -15,10 +15,10 @@ on:
   workflow_dispatch:
 
 env:
-  IMAGE_NAME: "bluefin-lts"  # the name of the image produced by this build, matches repo names
-  IMAGE_DESC: "CentOS Stream-based Bluefin image"
+  IMAGE_NAME: "bluefin"  # the name of the image produced by this build, matches repo names
+  IMAGE_DESC: "Bluefin LTS, built on CentOS Stream with bootc "
   IMAGE_REGISTRY: "ghcr.io/${{ github.repository_owner }}"
-  DEFAULT_TAG: "latest"
+  DEFAULT_TAG: "lts"
   CENTOS_VERSION: "stream10"
 
 concurrency:
@@ -67,12 +67,10 @@ jobs:
         id: metadata
         with:
           tags: |
-            type=raw,value=latest
-            type=raw,value=latest.{{date 'YYYYMMDD'}}
-            type=raw,value={{date 'YYYYMMDD'}}
+            type=raw,value=lts
+            type=raw,value=lts-{{date 'YYYYMMDD'}}
             type=raw,value=${{ env.CENTOS_VERSION }}
             type=raw,value=${{ env.CENTOS_VERSION }}.{{date 'YYYYMMDD'}}
-            type=sha,enable=${{ github.event_name == 'pull_request' }}
             type=ref,event=pr
           labels: |
             io.artifacthub.package.readme-url=https://raw.githubusercontent.com/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}/refs/heads/main/README.md
