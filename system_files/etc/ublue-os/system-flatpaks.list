@@ -32,3 +32,5 @@ runtime/org.gtk.Gtk3theme.adw-gtk3-dark
 io.podman_desktop.PodmanDesktop
 io.github.pwr_solaar.solaar
 io.github.input_leap.input-leap
+org.virt_manager.virt-manager
+org.virt_manager.virt_manager.Extension.Qemu
