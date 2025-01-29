@@ -11,7 +11,7 @@ dnf -y remove \
 
 dnf -y install \
 	-x gnome-extensions-app \
- 	baobab \
+ 	gnome-disk-utility \
 	distrobox \
  	distribution-gpg-keys \
   	fastfetch \
