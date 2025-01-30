@@ -4,17 +4,12 @@ set -xeuo pipefail
 
 # This is a bucket list. We want to not have anything in this file at all.
 
-# See https://github.com/ublue-os/bluefin-lts/issues/3
-mkdir -p /var/roothome
-chmod 0700 /var/roothome
-
-# Fast track https://gitlab.com/fedora/bootc/base-images/-/merge_requests/71
-ln -sf /run /var/run
-
-# Necessary so that the alternatives command works and some ld.(whatever) variants work
-mkdir -p /var/lib/alternatives
-
 # Enable the same compose repos during our build that the centos-bootc image
 # uses during its build.  This avoids downgrading packages in the image that
 # have strict NVR requirements.
-dnf config-manager --set-enabled baseos-compose,appstream-compose
+curl --retry 3 -Lo "/etc/yum.repos.d/compose.repo" "https://gitlab.com/redhat/centos-stream/containers/bootc/-/raw/c${MAJOR_VERSION_NUMBER}s/cs.repo"
+sed -r \
+    -e 's@(baseos|appstream)@&-compose@' \
+    -e 's@- (BaseOS|AppStream)@& - Compose@' \
+    -e 's@/usr/share/distribution-gpg-keys/centos/RPM-GPG-KEY-CentOS-Official@/etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial-SHA256@' \
+    -i /etc/yum.repos.d/compose.repo
