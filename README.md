@@ -22,7 +22,7 @@ If you used the previous **Achillobator prorotype image** you _must_ rebase to t
 
 ### Installation and Caveats
 
-1. Snag the ISO: [Soon]
+1. Snag the ISO: [download.projectbluefin.io/bluefin-lts.iso](https://download.projectbluefin.io/bluefin-lts.iso)
 2. On first boot, install flatpaks: `ujust install-system-flatpaks`
   
 [Incoming anaconda PR](https://github.com/rhinstaller/anaconda/pull/6056) for the flatpaks, also:
