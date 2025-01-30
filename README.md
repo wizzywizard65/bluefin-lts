@@ -24,7 +24,6 @@ If you used the previous **Achillobator prorotype image** you _must_ rebase to t
 
 1. Snag the ISO: [Soon]
 2. On first boot, install flatpaks: `ujust install-system-flatpaks`
-3. Automatic updates aren't working, you need to: `sudo bootc upgrade` by hand for now.
   
 [Incoming anaconda PR](https://github.com/rhinstaller/anaconda/pull/6056) for the flatpaks, also:
 
