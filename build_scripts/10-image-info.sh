@@ -5,7 +5,6 @@ set -xeuo pipefail
 IMAGE_REF="ostree-image-signed:docker://ghcr.io/${IMAGE_VENDOR}/${IMAGE_NAME}"
 IMAGE_INFO="/usr/share/ublue-os/image-info.json"
 IMAGE_FLAVOR="main"
-MAJOR_VERSION="$(sh -c '. /usr/lib/os-release ; echo $VERSION_ID')"
 
 cat >$IMAGE_INFO <<EOF
 {
@@ -13,8 +12,8 @@ cat >$IMAGE_INFO <<EOF
   "image-ref": "${IMAGE_REF}",
   "image-flavor": "${IMAGE_FLAVOR}",
   "image-vendor": "${IMAGE_VENDOR}",
-  "image-tag": "${MAJOR_VERSION}",
-  "centos-version": "${MAJOR_VERSION}"
+  "image-tag": "${MAJOR_VERSION_NUMBER}",
+  "centos-version": "${MAJOR_VERSION_NUMBER}"
 }
 EOF
 
