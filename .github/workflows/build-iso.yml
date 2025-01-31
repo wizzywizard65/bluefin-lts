@@ -60,8 +60,13 @@ jobs:
           IMAGE_NAME: ${{ env.IMAGE_NAME }}
           PLATFORM: ${{ matrix.platform }}
         run: |
-          mv $OUTPUT_PATH $OUTPUT_DIRECTORY/$IMAGE_NAME-$PLATFORM.iso
-          mv $CHECKSUM_PATH $OUTPUT_DIRECTORY/$IMAGE_NAME-$PLATFORM.iso-CHECKSUM
+          if [ $PLATFORM == "amd64" ]; then
+            mv $OUTPUT_PATH $OUTPUT_DIRECTORY/$IMAGE_NAME.iso
+            mv $CHECKSUM_PATH $OUTPUT_DIRECTORY/$IMAGE_NAME.iso-CHECKSUM
+          else
+            mv $OUTPUT_PATH $OUTPUT_DIRECTORY/$IMAGE_NAME-$PLATFORM.iso
+            mv $CHECKSUM_PATH $OUTPUT_DIRECTORY/$IMAGE_NAME-$PLATFORM.iso-CHECKSUM
+          fi
 
       - name: Upload to Job Artifacts
         if: inputs.upload-to-cloudflare == false || github.event_name == 'pull_request'
