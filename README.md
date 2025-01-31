@@ -10,7 +10,7 @@ Larger, more lethal [Bluefin](https://projectbluefin.io). `bluefin:lts` is built
 
 # Purpose and Status
 
-## Check [docs.projectbluefin.io/lts](docs.projectbluefin.io/lts) for more information.
+## Check [docs.projectbluefin.io/lts](http://docs.projectbluefin.io/lts) for more information.
 
 ![image](https://github.com/user-attachments/assets/48985776-7a94-4138-bf00-d2df7824047d)
 
