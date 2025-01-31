@@ -10,6 +10,8 @@ Larger, more lethal [Bluefin](https://projectbluefin.io). `bluefin:lts` is built
 
 # Purpose and Status
 
+## Check [docs.projectbluefin.io/lts](docs.projectbluefin.io/lts) for more information.
+
 ![image](https://github.com/user-attachments/assets/48985776-7a94-4138-bf00-d2df7824047d)
 
 ### Existing Users
@@ -33,14 +35,6 @@ If you used the previous **Achillobator prorotype image** you _must_ rebase to t
   - No nvidia builds until Nvidia publishes EL10 drivers
 - No akmods or other hwe has been added
 
-## Rationale
-
-With most of my user facing life being in my browser and flatpak, a slower cadenced OS has a proven use case. With `bootc` being a critical piece of RHEL image mode, it means that stack in CentOS will be well maintained. And with the flexibility of the container model, we can source content from anywhere. This is a spike to see if it's worth adding this as a `bluefin:lts` branch, or worse case, a starting point for someone who wants to grow a community around this use case. 
-
-- GNOME47 will be shipping, we have builds for our stuff already
-- 6.12 LTS kernel covers Framework's current laptops, we can source newer kernels for different tags later, but this should be great for 2025.
-- Is there going to be a reliable GNOME COPR for El10?
-
 ## Building
 
 To build locally and then spit out a VM: 
@@ -51,14 +45,3 @@ just build-iso ghcr.io/ublue-os/bluefin:lts
 ```
 
 qcow2 file is written to the `output/` directory. Username and password are `centos`/`centos`
-
-## Current Ideas
-
-- hyperscale sig provides newer kernels, we don't need to stay old old.
-- EPEL will fill in lots of stuff
-- Long lived and boring, we expect even less maintenance than Fedora-based Bluefin
-
-## Other Examples
-
-- [HeliumOS](https://codeberg.org/HeliumOS)
-- Valentin Rothberg - [fedora-bootc-workstation](https://github.com/vrothberg/fedora-bootc-workstation/tree/main)
