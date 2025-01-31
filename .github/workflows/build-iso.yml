@@ -66,13 +66,14 @@ jobs:
           CHECKSUM_PATH: ${{ steps.build.outputs.checksum-path }}
           IMAGE_NAME: ${{ env.IMAGE_NAME }}
           PLATFORM: ${{ matrix.platform }}
+          DEFAULT_TAG: ${{ env.DEFAULT_TAG }}
         run: |
           if [ $PLATFORM == "amd64" ]; then
-            mv $OUTPUT_PATH $OUTPUT_DIRECTORY/$IMAGE_NAME.iso
-            mv $CHECKSUM_PATH $OUTPUT_DIRECTORY/$IMAGE_NAME.iso-CHECKSUM
+            mv $OUTPUT_PATH $OUTPUT_DIRECTORY/$IMAGE_NAME-$DEFAULT_TAG.iso
+            mv $CHECKSUM_PATH $OUTPUT_DIRECTORY/$IMAGE_NAME-$DEFAULT_TAG.iso-CHECKSUM
           else
-            mv $OUTPUT_PATH $OUTPUT_DIRECTORY/$IMAGE_NAME-$PLATFORM.iso
-            mv $CHECKSUM_PATH $OUTPUT_DIRECTORY/$IMAGE_NAME-$PLATFORM.iso-CHECKSUM
+            mv $OUTPUT_PATH $OUTPUT_DIRECTORY/$IMAGE_NAME-$DEFAULT_TAG-$PLATFORM.iso
+            mv $CHECKSUM_PATH $OUTPUT_DIRECTORY/$IMAGE_NAME-$DEFAULT_TAG-$PLATFORM.iso-CHECKSUM
           fi
 
       - name: Upload to Job Artifacts
