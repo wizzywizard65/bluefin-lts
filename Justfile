@@ -132,6 +132,7 @@ _build-bib $target_image $tag $type $config: (_rootful_load_image target_image t
     fi
 
     args="--type ${type}"
+    args+="--use-librepo=True"
 
     if [[ $target_image == localhost/* ]]; then
       args+=" --local"
