@@ -12,8 +12,6 @@ Larger, more lethal [Bluefin](https://projectbluefin.io). `bluefin:lts` is built
 
 ## Check [docs.projectbluefin.io/lts](http://docs.projectbluefin.io/lts) for more information.
 
-![image](https://github.com/user-attachments/assets/48985776-7a94-4138-bf00-d2df7824047d)
-
 ### Existing Users
 
 If you used the previous **Achillobator prorotype image** you _must_ rebase to the new image. 
