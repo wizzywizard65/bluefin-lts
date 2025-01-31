@@ -1,5 +1,5 @@
 ---
-name: Build ISO Multi-Arch
+name: Build ISOs
 
 on:
   workflow_dispatch:
@@ -22,7 +22,7 @@ concurrency:
 
 jobs:
   build:
-    name: Build ISO Multi-Arch
+    name: Build ISOs
     runs-on: ${{ matrix.platform == 'amd64' && 'ubuntu-24.04' || 'ubuntu-24.04-arm' }}
     strategy:
       fail-fast: false
