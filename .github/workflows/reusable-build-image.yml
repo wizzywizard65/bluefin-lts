@@ -302,8 +302,8 @@ jobs:
           DIGESTS=$(echo "$DIGESTS_JSON" | jq -c '.')
           # turn the comma separated string into a list
           platforms=()
-          IFS=',' read -r -a PLATFORMS <<< "${{ inputs.platforms }}"
-          for platform in ${PLATFORMS[@]}; do
+          IFS=',' read -r -a platforms <<< "${{ inputs.platforms }}"
+          for platform in ${platforms[@]}; do
             digest=$(echo $DIGESTS | jq -r ".$platform")
             echo "Adding ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}@$digest for $platform"
             podman manifest add $MANIFEST ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}@$digest --arch $platform
