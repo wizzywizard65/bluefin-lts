@@ -68,6 +68,7 @@ jobs:
         id: build-image
         shell: bash
         run: |
+          set -x
           just=$(which just)
           IMAGE_NAME=$IMAGE_NAME
           # Fizzbuzz but we cant fizzbuzz it afaik
@@ -82,7 +83,7 @@ jobs:
             IMAGE_NAME+="-dx"
           fi
           export IMAGE_NAME
-          sudo $just build "${IMAGE_NAME}${{ matrix.flavor }}" "${DEFAULT_TAG}" "$ENABLE_DX "$ENABLE_HWE"
+          sudo $just build "${IMAGE_NAME}${{ matrix.flavor }}" "${DEFAULT_TAG}" "$ENABLE_DX" "$ENABLE_HWE"
 
       - name: Run Rechunker
         if: github.event_name != 'pull_request' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
