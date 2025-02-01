@@ -73,6 +73,8 @@ jobs:
           IMAGE_NAME=$IMAGE_NAME
           # Fizzbuzz but we cant fizzbuzz it afaik
           FLAVOR=${{ matrix.flavor }}
+          ENABLE_DX=0
+          ENABLE_HWE=0
           if [[ "$FLAVOR" =~ "hwe" ]] ; then
             ENABLE_HWE=1
             IMAGE_NAME="${IMAGE_NAME}-hwe"
