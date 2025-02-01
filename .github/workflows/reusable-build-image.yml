@@ -300,7 +300,9 @@ jobs:
           LABELS: ${{ steps.metadata.outputs.labels }}
         run: |
           DIGESTS=$(echo "$DIGESTS_JSON" | jq -c '.')
-          PLATFORMS=(${{ env.PLATFORMS }})
+          # turn the comma separated string into a list
+          platforms=()
+          IFS=',' read -r -a PLATFORMS <<< "${{ inputs.platforms }}"
           for platform in ${PLATFORMS[@]}; do
             digest=$(echo $DIGESTS | jq -r ".$platform")
             echo "Adding ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}@$digest for $platform"
