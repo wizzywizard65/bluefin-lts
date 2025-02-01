@@ -20,29 +20,12 @@ env:
   IMAGE_REGISTRY: "ghcr.io/${{ github.repository_owner }}"
   DEFAULT_TAG: "lts"
   CENTOS_VERSION: "stream10"
-  PLATFORMS: "amd64 arm64"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref || github.run_id }}
   cancel-in-progress: true
 
 jobs:
-  generate_matrix:
-    runs-on: ubuntu-latest
-    outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
-    steps:
-      - name: Set matrix
-        id: set-matrix
-        run: |
-          # turn the comma separated string into a list
-          platforms=(${{ env.PLATFORMS }})
-          MATRIX="{\"include\":[]}"
-          for platform in "${platforms[@]}"; do
-            MATRIX=$(echo $MATRIX | jq ".include += [{\"platform\": \"$platform\"}]")
-          done
-          echo "matrix=$(echo $MATRIX | jq -c '.')" >> $GITHUB_OUTPUT
-
   build_push:
     name: Build and push image
     runs-on: ${{ matrix.platform == 'amd64' && 'ubuntu-24.04' || 'ubuntu-24.04-arm' }}
@@ -50,7 +33,9 @@ jobs:
     timeout-minutes: 30
     strategy:
       fail-fast: false
-      matrix: ${{fromJson(needs.generate_matrix.outputs.matrix)}}
+      matrix:
+        platform: ["amd64", "arm64"]
+        flavor: ["","hwe", "dx", "hwe-dx"]
     permissions:
       contents: read
       packages: write
@@ -85,7 +70,20 @@ jobs:
         shell: bash
         run: |
           just=$(which just)
-          sudo $just build "${IMAGE_NAME}" "${DEFAULT_TAG}"
+          IMAGE_NAME=$IMAGE_NAME
+          # Fizzbuzz but we cant fizzbuzz it afaik
+          FLAVOR=${{matrix.flavor}}
+          [ "$FLAVOR" != "" ] && IMAGE_NAME+="-"
+          if [[ "$FLAVOR" == "*hwe*"]] ; then
+            ENABLE_HWE=1
+            IMAGE_NAME+="-hwe"
+          fi
+          if [[ "$FLAVOR" == "*dx*"]] ; then
+            ENABLE_DX=1
+            IMAGE_NAME+="-dx"
+          fi
+          export IMAGE_NAME
+          sudo $just build "${IMAGE_NAME}${{ matrix.flavor }}" "${DEFAULT_TAG}" "$ENABLE_DX "$ENABLE_HWE"
 
       - name: Run Rechunker
         if: github.event_name != 'pull_request' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
