@@ -12,7 +12,7 @@ Larger, more lethal [Bluefin](https://projectbluefin.io). `bluefin:lts` is built
 
 ## Check [docs.projectbluefin.io/lts](http://docs.projectbluefin.io/lts) for more information.
 
-### Existing Users
+### Existing Users ONLY
 
 If you used the previous **Achillobator prorotype image** you _must_ rebase to the new image. 
 
@@ -20,26 +20,6 @@ If you used the previous **Achillobator prorotype image** you _must_ rebase to t
 
     sudo bootc rebase ghcr.io/ublue-os/bluefin:lts
 
-### Installation and Caveats
+#### New Users
 
-1. Snag the ISO: [download.projectbluefin.io/bluefin-lts.iso](https://download.projectbluefin.io/bluefin-lts.iso)
-2. On first boot, install flatpaks: `ujust install-system-flatpaks`
-  
-[Incoming anaconda PR](https://github.com/rhinstaller/anaconda/pull/6056) for the flatpaks, also:
-
-- Do not rebase to this from an existing Fedora image, ain't no one testing that. Also the filesystems are going to be different, etc. We recommend a VM for now
-- Some packages are missing until they get added to the EPEL10 repos.
-  - Developer tools are included, -dx split will come later
-  - No nvidia builds until Nvidia publishes EL10 drivers
-- No akmods or other hwe has been added
-
-## Building
-
-To build locally and then spit out a VM: 
-
-```
-just build
-just build-iso ghcr.io/ublue-os/bluefin:lts
-```
-
-qcow2 file is written to the `output/` directory. Username and password are `centos`/`centos`
+Check [the documentation](https://docs.projectbluefin.io/lts) for the latest instructions.
