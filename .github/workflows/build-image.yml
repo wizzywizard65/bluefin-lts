@@ -72,15 +72,14 @@ jobs:
           just=$(which just)
           IMAGE_NAME=$IMAGE_NAME
           # Fizzbuzz but we cant fizzbuzz it afaik
-          FLAVOR=${{matrix.flavor}}
-          [ "$FLAVOR" != "" ] && IMAGE_NAME+="-"
-          if [[ "$FLAVOR" == "*hwe*"]] ; then
+          FLAVOR=${{ matrix.flavor }}
+          if [[ "$FLAVOR" == "*hwe*" ]] ; then
             ENABLE_HWE=1
-            IMAGE_NAME+="-hwe"
+            IMAGE_NAME="${IMAGE_NAME}-hwe"
           fi
-          if [[ "$FLAVOR" == "*dx*"]] ; then
+          if [[ "$FLAVOR" == "*dx*" ]] ; then
             ENABLE_DX=1
-            IMAGE_NAME+="-dx"
+            IMAGE_NAME="${IMAGE_NAME}-dx"
           fi
           export IMAGE_NAME
           sudo $just build "${IMAGE_NAME}${{ matrix.flavor }}" "${DEFAULT_TAG}" "$ENABLE_DX" "$ENABLE_HWE"
