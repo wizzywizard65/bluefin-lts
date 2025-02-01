@@ -71,19 +71,18 @@ jobs:
           set -x
           just=$(which just)
           IMAGE_NAME=$IMAGE_NAME
-          # Fizzbuzz but we cant fizzbuzz it afaik
           FLAVOR=${{ matrix.flavor }}
           ENABLE_DX=0
           ENABLE_HWE=0
-          if [[ "$FLAVOR" =~ "hwe" ]] ; then
-            ENABLE_HWE=1
-            IMAGE_NAME="${IMAGE_NAME}-hwe"
-          fi
           if [[ "$FLAVOR" =~ "dx" ]] ; then
             ENABLE_DX=1
             IMAGE_NAME="${IMAGE_NAME}-dx"
           fi
-          export IMAGE_NAME
+          if [[ "$FLAVOR" =~ "hwe" ]] ; then
+            ENABLE_HWE=1
+            IMAGE_NAME="${IMAGE_NAME}-hwe"
+          fi
+          echo "IMAGE_NAME=$IMAGE_NAME" >> $GITHUB_ENV
           sudo $just build "${IMAGE_NAME}" "${DEFAULT_TAG}" "$ENABLE_DX" "$ENABLE_HWE"
 
       - name: Run Rechunker
