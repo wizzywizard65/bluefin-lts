@@ -58,7 +58,7 @@ jobs:
         id: build
         uses: ublue-os/bootc-image-builder-action@main
         with:
-          builder-image: ghcr.io/centos-workstation/bootc-image-builder:latest
+          bootc-image-builder-image: ghcr.io/centos-workstation/bootc-image-builder:latest
           use-librepo: true
           config-file: ./image-builder-iso.config.toml
           image: ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.DEFAULT_TAG }}
