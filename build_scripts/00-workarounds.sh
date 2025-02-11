@@ -8,7 +8,7 @@ set -xeuo pipefail
 # uses during its build.  This avoids downgrading packages in the image that
 # have strict NVR requirements.
 curl --retry 3 -Lo "/etc/yum.repos.d/compose.repo" "https://gitlab.com/redhat/centos-stream/containers/bootc/-/raw/c${MAJOR_VERSION_NUMBER}s/cs.repo"
-sed -r -i -f - /etc/yum.repos.d/compose.repo <<EOF
-s@- (BaseOS|AppStream)@& - Compose@
-s@\(baseos\|appstream\)@&-compose@
-EOF
+sed -i \
+  -e "s@- (BaseOS|AppStream)@& - Compose@" \
+  -e "s@\(baseos\|appstream\)@&-compose@" \
+  /etc/yum.repos.d/compose.repo
