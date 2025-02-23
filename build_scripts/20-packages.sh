@@ -18,41 +18,43 @@ dnf -y install \
 	fzf \
 	glow \
 	wl-clipboard \
-	gum
-
-# FIXME: this will be on EPEL tomorrow (today: 20-02-2025)
-# dnf install -y --enablerepo="epel-testing" \
-	# jetbrains-mono-fonts-all
+	gum \
+	jetbrains-mono-fonts-all
 
 # Everything that depends on external repositories should be after this.
 # Make sure to set them as disabled and enable them only when you are going to use their packages.
 # We do, however, leave crb and EPEL enabled by default.
-
-# RPMS from Ublue-os config
-dnf -y install /tmp/rpms/ublue-os-{udev-rules,luks}.noarch.rpm
-
-cp -r /usr/share/ublue-os/just /tmp/just
-# Focefully install ujust without powerstat while we don't have it on EPEL
-rpm -ivh /tmp/rpms/ublue-os-just.noarch.rpm --nodeps --force
-mv /tmp/just/* /usr/share/ublue-os/just
 
 dnf config-manager --add-repo "https://pkgs.tailscale.com/stable/centos/${MAJOR_VERSION_NUMBER}/tailscale.repo"
 dnf config-manager --set-disabled "tailscale-stable"
 dnf -y --enablerepo "tailscale-stable" install \
 	tailscale
 
-dnf config-manager --add-repo "https://copr.fedorainfracloud.org/coprs/ublue-os/staging/repo/epel-$MAJOR_VERSION_NUMBER/ublue-os-staging-epel-$MAJOR_VERSION_NUMBER.repo"
-dnf config-manager --set-disabled "copr:copr.fedorainfracloud.org:ublue-os:staging"
-dnf -y --enablerepo copr:copr.fedorainfracloud.org:ublue-os:staging install \
+dnf config-manager --add-repo "https://copr.fedorainfracloud.org/coprs/ublue-os/packages/repo/epel-$MAJOR_VERSION_NUMBER/ublue-os-packages-epel-$MAJOR_VERSION_NUMBER.repo"
+dnf config-manager --set-disabled "copr:copr.fedorainfracloud.org:ublue-os:packages"
+dnf -y --enablerepo copr:copr.fedorainfracloud.org:ublue-os:packages install \
 	-x bluefin-logos \
-	jetbrains-mono-fonts-all \
-	gnome-shell-extension-{search-light,gsconnect,logo-menu,caffeine} \
-	ublue-{motd,fastfetch,brew,bling,rebase-helper,setup-services} \
+	ublue-os-just \
+	ublue-os-luks \
+	ublue-os-signing \
+	ublue-os-udev-rules \
+	ublue-os-update-services \
+	ublue-{motd,fastfetch,bling,rebase-helper,setup-services} \
 	uupd \
 	bluefin-*
 
-dnf -y --enablerepo copr:copr.fedorainfracloud.org:ublue-os:staging swap \
+# Upstream ublue-os-signing bug, we are using /usr/etc for the container signing and bootc gets mad at this
+cp -avf /usr/etc/. /etc
+rm -rvf /usr/etc
+
+dnf -y --enablerepo copr:copr.fedorainfracloud.org:ublue-os:packages swap \
 	centos-logos bluefin-logos
+
+dnf config-manager --add-repo "https://copr.fedorainfracloud.org/coprs/ublue-os/staging/repo/epel-$MAJOR_VERSION_NUMBER/ublue-os-staging-epel-$MAJOR_VERSION_NUMBER.repo"
+dnf config-manager --set-disabled "copr:copr.fedorainfracloud.org:ublue-os:staging"
+dnf -y --enablerepo copr:copr.fedorainfracloud.org:ublue-os:staging install \
+	jetbrains-mono-fonts-all \
+	gnome-shell-extension-{search-light,gsconnect,logo-menu,caffeine}
 
 dnf config-manager --add-repo "https://copr.fedorainfracloud.org/coprs/che/nerd-fonts/repo/centos-stream-${MAJOR_VERSION_NUMBER}/che-nerd-fonts-centos-stream-${MAJOR_VERSION_NUMBER}.repo"
 dnf config-manager --set-disabled copr:copr.fedorainfracloud.org:che:nerd-fonts
