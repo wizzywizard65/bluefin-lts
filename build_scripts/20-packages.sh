@@ -52,7 +52,7 @@ dnf -y --enablerepo copr:copr.fedorainfracloud.org:ublue-os:packages swap \
 
 dnf config-manager --add-repo "https://copr.fedorainfracloud.org/coprs/ublue-os/packages/repo/epel-$MAJOR_VERSION_NUMBER/ublue-os-packages-epel-$MAJOR_VERSION_NUMBER.repo"
 dnf config-manager --set-disabled "copr:copr.fedorainfracloud.org:ublue-os:packages"
-dnf -y --enablerepo copr:copr.fedorainfracloud.org:ublue-os:packages install \
+dnf -y --enablerepo copr:copr.fedorainfracloud.org:ublue-os:staging install \
 	jetbrains-mono-fonts-all \
 	gnome-shell-extension-{search-light,gsconnect,logo-menu,caffeine}
 
