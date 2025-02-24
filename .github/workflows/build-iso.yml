@@ -64,7 +64,7 @@ jobs:
             IMAGE_NAME="${IMAGE_NAME}-${FLAVOR}"
             export IMAGE_NAME
             echo "IMAGE_NAME=${IMAGE_NAME}" >> $GITHUB_ENV
-            sed -i "s/bluefin\:lts/bluefin-$FLAVOR\:lts/g" ./image-builder-iso.config.toml
+            sed -i "s/bluefin\:lts/bluefin-$FLAVOR\:lts/g" ./iso.toml
           fi
 
       - name: Build ISO
