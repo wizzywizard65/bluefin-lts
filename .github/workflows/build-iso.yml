@@ -13,7 +13,7 @@ on:
     branches:
       - main
     paths:
-      - './image-builder-iso.config.toml'
+      - './iso.toml'
       - './.github/workflows/build-iso.yml'
       - './Justfile'
 
