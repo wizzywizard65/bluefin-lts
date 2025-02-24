@@ -73,7 +73,7 @@ jobs:
         with:
           bootc-image-builder-image: ghcr.io/centos-workstation/bootc-image-builder:latest
           use-librepo: true
-          config-file: ./image-builder-iso.config.toml
+          config-file: ./iso.toml
           image: ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.DEFAULT_TAG }}
 
       - name: Patch ISO with our branding
