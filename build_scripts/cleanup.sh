@@ -15,19 +15,19 @@ dnf config-manager --set-disabled baseos-compose,appstream-compose
 # Image-layer cleanup
 shopt -s extglob
 
-# shellcheck disable=SC2115
-rm -rf /var/!(cache)
-rm -rf /var/cache/!(rpm-ostree)
-# Ensure /var/tmp exists, FIXME: remove this once this is fixed upstream
-mkdir -p /var/tmp
-# Remove gitkeep file if that still is on / for any reason
-rm -f /.gitkeep
 dnf clean all
+rm -rf /.gitkeep \
+  /var/tmp/* \
+  /var/lib/{dnf,rhsm} \
+  /var/cache/* \
+  /boot/*
+
+# Remove non-empty log files so that we dont get bootc lint errors
+find /var/log -type f -exec 'bash' '-c' "[ -s {} ] && rm {}" ';'
 
 # Set file to globally readable
 # FIXME: This should not be necessary, needs to be cleaned up somewhere else
 chmod 644 "/usr/share/ublue-os/image-info.json"
 
-# FIXME: bootc container lint --fix will replace this
-ostree container commit
-bootc container lint
+# FIXME: use --fix option once https://github.com/containers/bootc/pull/1152 is merged
+bootc container lint --fatal-warnings
