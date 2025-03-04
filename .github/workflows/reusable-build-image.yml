@@ -119,7 +119,27 @@ jobs:
             ENABLE_HWE=1
           fi
 
-          sudo $just build "${IMAGE_NAME}" "${DEFAULT_TAG}" "$ENABLE_DX" "$ENABLE_HWE" "$ENABLE_GDX"
+          sudo $just build "${IMAGE_NAME}" "${DEFAULT_TAG}" "${ENABLE_DX}" "${ENABLE_HWE}" "${ENABLE_GDX}"
+
+      - name: Setup Syft
+        id: setup-syft
+        if: github.event_name != 'pull_request'
+        uses: anchore/sbom-action/download-syft@v0
+
+      - name: Generate SBOM
+        id: generate-sbom
+        if: github.event_name != 'pull_request'
+        env:
+          IMAGE: ${{ env.IMAGE_NAME }}
+          DEFAULT_TAG: ${{ env.DEFAULT_TAG }}
+          SYFT_CMD: ${{ steps.setup-syft.outputs.cmd }}
+        run: |
+          sudo systemctl start podman.socket
+          
+          OUTPUT_PATH="$(mktemp -d)/sbom.json"
+          export SYFT_PARALLELISM=$(($(nproc)*2))
+          sudo $SYFT_CMD ${IMAGE}:${DEFAULT_TAG} -o spdx-json=${OUTPUT_PATH}
+          echo "OUTPUT_PATH=${OUTPUT_PATH}" >> $GITHUB_OUTPUT
 
       - name: Run Rechunker
         if: github.event_name != 'pull_request'
@@ -136,12 +156,12 @@ jobs:
         if: github.event_name != 'pull_request'
         id: load
         run: |
-          IMAGE=$(sudo podman pull ${{ steps.rechunk.outputs.ref }})
+          IMAGE=$(podman pull ${{ steps.rechunk.outputs.ref }})
           sudo rm -rf ${{ steps.rechunk.outputs.location }}
-          sudo podman image tag $IMAGE ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.DEFAULT_TAG }}
+          podman image tag $IMAGE ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.DEFAULT_TAG }}
 
           IMAGE=${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.DEFAULT_TAG }}
-          IMAGE_DIGEST=$(sudo podman image inspect --format '{{.Digest}}' $IMAGE)
+          IMAGE_DIGEST=$(podman image inspect --format '{{.Digest}}' $IMAGE)
           echo "image=$IMAGE" >> $GITHUB_OUTPUT
           echo "digest=$IMAGE_DIGEST" >> $GITHUB_OUTPUT
 
@@ -152,7 +172,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo ${{ secrets.GITHUB_TOKEN }} | sudo podman login -u ${{ github.actor }} --password-stdin $registry
+          echo ${{ secrets.GITHUB_TOKEN }} | podman login -u ${{ github.actor }} --password-stdin $registry
           echo ${{ secrets.GITHUB_TOKEN }} | docker login -u ${{ github.actor }} --password-stdin $registry
 
       # Push the image to GHCR (Image Registry)
@@ -166,9 +186,9 @@ jobs:
           PLATFORM: ${{ matrix.platform }}
         run: |
           set -x
-          sudo podman tag ${{ env.IMAGE_REGISTRY }}/${IMAGE_NAME}:${DEFAULT_TAG} $IMAGE_REGISTRY/$IMAGE_NAME:$DEFAULT_TAG-$PLATFORM
+          podman tag ${{ env.IMAGE_REGISTRY }}/${IMAGE_NAME}:${DEFAULT_TAG} $IMAGE_REGISTRY/$IMAGE_NAME:$DEFAULT_TAG-$PLATFORM
           for i in {1..3}; do
-            sudo podman push --digestfile=/tmp/digestfile $IMAGE_REGISTRY/$IMAGE_NAME:$DEFAULT_TAG-$PLATFORM && break || sleep $((5 * i));
+            podman push --digestfile=/tmp/digestfile $IMAGE_REGISTRY/$IMAGE_NAME:$DEFAULT_TAG-$PLATFORM && break || sleep $((5 * i));
           done
           REMOTE_IMAGE_DIGEST=$(cat /tmp/digestfile)
           echo "remote_image_digest=$REMOTE_IMAGE_DIGEST" >> $GITHUB_OUTPUT
@@ -191,6 +211,21 @@ jobs:
           TAGS: ${{ steps.push.outputs.digest }}
           COSIGN_EXPERIMENTAL: false
           COSIGN_PRIVATE_KEY: ${{ secrets.SIGNING_SECRET }}
+
+      - name: Add SBOM Attestation
+        if: github.event_name != 'pull_request'
+        env:
+          IMAGE: ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}
+          DIGEST: ${{ steps.push.outputs.remote_image_digest }}
+          COSIGN_PRIVATE_KEY: ${{ secrets.SIGNING_SECRET }}
+          SBOM_OUTPUT: ${{ steps.generate-sbom.outputs.OUTPUT_PATH }}
+        run: |
+          cd "$(dirname "$SBOM_OUTPUT")"
+          cosign attest -y \
+            --predicate ./sbom.json \
+            --type spdxjson \
+            --key env://COSIGN_PRIVATE_KEY \
+            "${IMAGE}@${DIGEST}"
 
       - name: Create Job Outputs
         if: github.event_name != 'pull_request'
@@ -220,7 +255,7 @@ jobs:
       - generate_matrix
       - build_push
     container:
-      image: quay.io/fedora/fedora:41@sha256:42128db05cd20c23000a6249522426332be443cd6fafde7e107145e6a22fb440
+      image: quay.io/fedora/fedora:41
       options: --privileged --security-opt seccomp=unconfined
     permissions:
       contents: read
