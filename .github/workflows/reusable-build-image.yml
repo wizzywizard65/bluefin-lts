@@ -168,6 +168,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          echo ${{ secrets.GITHUB_TOKEN }} | sudo podman login -u ${{ github.actor }} --password-stdin $registry
           echo ${{ secrets.GITHUB_TOKEN }} | podman login -u ${{ github.actor }} --password-stdin $registry
           echo ${{ secrets.GITHUB_TOKEN }} | docker login -u ${{ github.actor }} --password-stdin $registry
 
