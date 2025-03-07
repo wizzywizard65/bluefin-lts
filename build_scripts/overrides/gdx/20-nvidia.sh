@@ -48,7 +48,5 @@ cat >/usr/lib/bootc/kargs.d/00-nvidia.toml <<EOF
 kargs = ["rd.driver.blacklist=nouveau", "modprobe.blacklist=nouveau", "nvidia-drm.modeset=1"]
 EOF
 
-dnf -y remove kernel-devel kernel-devel-matched kernel-headers dkms gcc-c++
-
 # Make sure initramfs is rebuilt after nvidia drivers or kernel replacement
 /usr/bin/dracut --no-hostonly --kver "$QUALIFIED_KERNEL" --reproducible --zstd -v -f
