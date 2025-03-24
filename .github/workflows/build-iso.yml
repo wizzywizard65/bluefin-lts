@@ -95,6 +95,7 @@ jobs:
           else
             mv "${OUTPUT_PATH}" "${OUTPUT_DIRECTORY}/${IMAGE_NAME}-${DEFAULT_TAG}-${PLATFORM}.iso"
           fi
+          echo "output_directory=$OUTPUT_DIRECTORY" >> "${GITHUB_OUTPUT}"
 
       - name: Upload to Job Artifacts
         if: inputs.upload-to-cloudflare == false || github.event_name == 'pull_request'
@@ -114,7 +115,7 @@ jobs:
           RCLONE_CONFIG_R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
           RCLONE_CONFIG_R2_REGION: auto
           RCLONE_CONFIG_R2_ENDPOINT: ${{ secrets.R2_ENDPOINT }}
-          SOURCE_DIR: ${{ steps.rename.steps.iso-dest }}
+          SOURCE_DIR: ${{ steps.rename.steps.output_directory }}
         run: |
           sudo apt-get update
           sudo apt-get install -y rclone
