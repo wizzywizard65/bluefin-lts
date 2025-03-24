@@ -36,7 +36,7 @@ jobs:
         # FIXME: temporarily disabled arm64 due to not having support on titanoboa _right now_
         # https://github.com/ublue-os/titanoboa/issues/34
         platform: [amd64]
-        flavor: ["", "hwe", "gdx"]
+        flavor: ["", "hwe", "dx"]
     permissions:
       contents: read
       packages: read
@@ -60,11 +60,23 @@ jobs:
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
+      - name: Format image ref
+        id: image_ref
+        env:
+          FLAVOR: ${{ matrix.flavor }}
+        run: |
+          OUTPUT_NAME="${IMAGE_REGISTRY}/${IMAGE_NAME}"
+          if [ "$FLAVOR" != "" ] ; then
+            OUTPUT_NAME="${OUTPUT_NAME}-${FLAVOR}"
+          fi
+          echo "image_ref=$OUTPUT_NAME" >> "${GITHUB_OUTPUT}"
+          
+
       - name: Build ISO
         id: build
         uses: ublue-os/titanoboa@main
         with:
-          image-ref: ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}${{ matrix.flavor != '' && '-${{ matrix.flavor }}'|| "${{ matrix.flavor }}" }}:lts
+          image-ref: ${{ steps.image_ref.outputs.image_ref }}:lts
 
       - name: Rename ISO
         id: rename
