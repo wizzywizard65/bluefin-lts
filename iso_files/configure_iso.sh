@@ -10,3 +10,12 @@ skip=privacy;timezone;software;goa
 [install]
 application=yai.desktop
 EOF
+
+systemctl disable brew-setup.service
+systemctl disable uupd.timer
+systemctl --global disable podman-auto-update.timer
+systemctl disable rpm-ostree.service
+systemctl disable uupd.timer
+systemctl disable ublue-system-setup.service
+systemctl --global disable ublue-user-setup.service
+systemctl disable check-sb-key.service
