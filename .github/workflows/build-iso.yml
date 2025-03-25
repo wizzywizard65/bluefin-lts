@@ -78,8 +78,7 @@ jobs:
           image-ref: ${{ steps.image_ref.outputs.image_ref }}:lts
           flatpaks-list: ${{ github.workspace }}/system_files/etc/ublue-os/system-flatpaks.list
           hook-post-rootfs: |
-            YAI_LATEST=$(curl -fSsL https://api.github.com/repos/ublue-os/yai/releases/latest | jq -r --arg arch $(arch) '.assets[] | select(.name | match("yai-.*."+$arch+".rpm")) | .browser_download_url')
-            { which dnf5 || which dnf; } 2>/dev/null install -y $YAI_LATEST
+            { which dnf5 || which dnf; } 2>/dev/null install -y $(curl -fSsL https://api.github.com/repos/ublue-os/yai/releases/latest | jq -r --arg arch $(arch) '.assets[] | select(.name | match("yai-.*."+$arch+".rpm")) | .browser_download_url')
             mkdir -p /etc/gnome-initial-setup
             tee /etc/gnome-initial-setup/vendor.conf <<EOF
             [live_user pages]
