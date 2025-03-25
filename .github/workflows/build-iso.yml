@@ -32,9 +32,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # FIXME: temporarily disabled arm64 due to not having support on titanoboa _right now_
-        # https://github.com/ublue-os/titanoboa/issues/34
-        platform: [amd64]
+        platform: [amd64,arm64]
         flavor: ["", "hwe", "dx"]
     permissions:
       contents: read
