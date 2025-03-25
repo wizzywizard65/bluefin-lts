@@ -33,7 +33,7 @@ jobs:
       fail-fast: false
       matrix:
         platform: [amd64,arm64]
-        flavor: ["", "hwe", "dx"]
+        flavor: ["", "hwe", "gdx"]
     permissions:
       contents: read
       packages: read
@@ -75,16 +75,7 @@ jobs:
         with:
           image-ref: ${{ steps.image_ref.outputs.image_ref }}:lts
           flatpaks-list: ${{ github.workspace }}/system_files/etc/ublue-os/system-flatpaks.list
-          hook-post-rootfs: |
-            { which dnf5 || which dnf; } 2>/dev/null install -y $(curl -fSsL https://api.github.com/repos/ublue-os/yai/releases/latest | jq -r --arg arch $(arch) '.assets[] | select(.name | match("yai-.*."+$arch+".rpm")) | .browser_download_url')
-            mkdir -p /etc/gnome-initial-setup
-            tee /etc/gnome-initial-setup/vendor.conf <<EOF
-            [live_user pages]
-            skip=privacy;timezone;software;goa
-
-            [install]
-            application=yai.desktop
-            EOF
+          hook-post-rootfs: ${{ github.workspace }}/iso_files/configure_iso.sh
 
       - name: Rename ISO
         id: rename
@@ -98,9 +89,14 @@ jobs:
           set -x
           mkdir -p output
           OUTPUT_DIRECTORY="$(realpath output)"
+          if [ "${FLAVOR}" != "" ] ; then
+            IMAGE_NAME="${IMAGE_NAME}-${FLAVOR}"
+          fi
           if [ $PLATFORM == "amd64" ]; then
+            sha256sum "${OUTPUT_PATH}" | tee "${OUTPUT_DIRECTORY}/${IMAGE_NAME}-${DEFAULT_TAG}.iso-CHECKSUM"
             mv "${OUTPUT_PATH}" "${OUTPUT_DIRECTORY}/${IMAGE_NAME}-${DEFAULT_TAG}.iso"
           else
+            sha256sum "${OUTPUT_PATH}" | tee "${OUTPUT_DIRECTORY}/${IMAGE_NAME}-${DEFAULT_TAG}-${PLATFORM}.iso-CHECKSUM"
             mv "${OUTPUT_PATH}" "${OUTPUT_DIRECTORY}/${IMAGE_NAME}-${DEFAULT_TAG}-${PLATFORM}.iso"
           fi
           echo "output_directory=$OUTPUT_DIRECTORY" >> "${GITHUB_OUTPUT}"
