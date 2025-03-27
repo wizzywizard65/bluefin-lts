@@ -17,6 +17,3 @@ systemctl disable uupd.timer
 systemctl disable ublue-system-setup.service
 systemctl --global disable ublue-user-setup.service
 systemctl disable check-sb-key.service
-
-rm -rf /var
-mkdir /var
