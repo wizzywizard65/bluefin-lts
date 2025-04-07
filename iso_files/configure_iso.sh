@@ -2,14 +2,13 @@
 
 set -x
 
-MAJOR_VERSION_NUMBER=10
-dnf config-manager --add-repo "https://copr.fedorainfracloud.org/coprs/ublue-os/staging/repo/epel-${MAJOR_VERSION_NUMBER}/ublue-os-staging-epel-$MAJOR_VERSION_NUMBER.repo"
-dnf config-manager --set-enabled "copr:copr.fedorainfracloud.org:ublue-os:staging"
+dnf install -y centos-release-hyperscale
+dnf config-manager --set-enabled crb
+
 dnf install -y \
   anaconda \
   anaconda-install-env-deps \
-  anaconda-live \
-  anaconda-webui
+  anaconda-live
 
 systemctl disable brew-setup.service
 systemctl disable uupd.timer
