@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
-YAI_LATEST=$(curl -fSsL https://api.github.com/repos/ublue-os/yai/releases/latest | jq -r --arg arch $(arch) '.assets[] | select(.name | match("yai-.*."+$arch+".rpm")) | .browser_download_url')
-dnf install -y $YAI_LATEST
 
-tee -a /usr/share/gnome-initial-setup/vendor.conf <<EOF
-
-[install]
-application=yai.desktop
-EOF
+dnf config-manager --add-repo "https://copr.fedorainfracloud.org/coprs/ublue-os/staging/repo/epel-${MAJOR_VERSION_NUMBER}/ublue-os-staging-epel-$MAJOR_VERSION_NUMBER.repo"
+dnf config-manager --set-disabled "copr:copr.fedorainfracloud.org:ublue-os:staging"
+dnf install -y \
+  anaconda \
+  anaconda-install-env-deps \
+  anaconda-live \
+  anaconda-webui
 
 systemctl disable brew-setup.service
 systemctl disable uupd.timer
