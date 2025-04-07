@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-
+MAJOR_VERSION_NUMBER=10
 dnf config-manager --add-repo "https://copr.fedorainfracloud.org/coprs/ublue-os/staging/repo/epel-${MAJOR_VERSION_NUMBER}/ublue-os-staging-epel-$MAJOR_VERSION_NUMBER.repo"
 dnf config-manager --set-disabled "copr:copr.fedorainfracloud.org:ublue-os:staging"
 dnf install -y \
