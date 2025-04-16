@@ -29,7 +29,6 @@ CODE_NAME="Achillobator Giganticus"
 sed -i -f - /usr/lib/os-release <<EOF
 s/^NAME=.*/NAME=\"${IMAGE_PRETTY_NAME}\"/
 s|^VERSION_CODENAME=.*|VERSION_CODENAME=\"${CODE_NAME}\"|
-s/^ID=.*/ID=$(${IMAGE_PRETTY_NAME} | tr '[:upper:]' '[:lower:]' | tr ' ' '_')/
 s/^VARIANT_ID=.*/VARIANT_ID=${IMAGE_NAME}/
 s/^PRETTY_NAME=.*/PRETTY_NAME=\"${IMAGE_PRETTY_NAME}\"/
 s|^HOME_URL=.*|HOME_URL=\"${HOME_URL}\"|
