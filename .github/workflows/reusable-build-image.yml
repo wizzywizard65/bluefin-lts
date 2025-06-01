@@ -42,6 +42,11 @@ on:
         required: false
         type: boolean
         default: true
+      testing:
+        description: "Enable experimental things during builds, such as gnome backport. Will build an extra `-testing` tag."
+        required: false
+        type: boolean
+        default: true
       publish:
         description: "Publish this image"
         required: false
@@ -71,6 +76,7 @@ jobs:
         id: set-matrix
         env:
           PLATFORMS: "${{ inputs.platforms }}"
+          ENABLE_TESTING: "${{ inputs.testing }}"
         run: |
           # turn the comma separated string into a list
           platforms=()
@@ -78,7 +84,12 @@ jobs:
 
           MATRIX="{\"include\":[]}"
           for platform in "${platforms[@]}"; do
-            MATRIX="$(echo "${MATRIX}" | jq ".include += [{\"platform\": \"${platform}\"}]")"
+            if [[ "${ENABLE_TESTING}" == "true" ]] ; then
+              MATRIX="$(echo "${MATRIX}" | jq ".include += [{\"platform\": \"${platform}\", \"testing\": "true"}]")"
+              MATRIX="$(echo "${MATRIX}" | jq ".include += [{\"platform\": \"${platform}\", \"testing\": "false"}]")"
+            else
+              MATRIX="$(echo "${MATRIX}" | jq ".include += [{\"platform\": \"${platform}\"}]")"
+            fi
           done
           echo "matrix=$(echo "${MATRIX}" | jq -c '.')" >> $GITHUB_OUTPUT
 
@@ -94,6 +105,8 @@ jobs:
       contents: read
       packages: write
       id-token: write
+    outputs:
+      image_tag: ${{ steps.build-image.outputs.image_tag }}
 
     steps:
       - name: Install dependencies
@@ -124,13 +137,19 @@ jobs:
         shell: bash
         env:
           FLAVOR: ${{ inputs.flavor }}
-          IMAGE_NAME: ${{ env.IMAGE_NAME }}
+          TESTING: ${{ matrix.testing }}
         run: |
           set -x
           just=$(which just)
 
+          ENABLE_TESTING=0
           ENABLE_GDX=0
           ENABLE_DX=0
+          if [[ "${TESTING}" == "true" ]] ; then
+            export DEFAULT_TAG="${DEFAULT_TAG}-testing"
+            echo "DEFAULT_TAG=${DEFAULT_TAG}" >> "${GITHUB_ENV}"
+            ENABLE_TESTING=1
+          fi
           if [[ "${FLAVOR}" =~ "gdx" ]] ; then
             ENABLE_GDX=1
           fi
@@ -138,7 +157,8 @@ jobs:
             ENABLE_DX=1
           fi
 
-          sudo $just build "${IMAGE_NAME}" "${DEFAULT_TAG}" "${ENABLE_DX}" "${ENABLE_GDX}"
+          sudo $just build "${IMAGE_NAME}" "${DEFAULT_TAG}" "${ENABLE_DX}" "${ENABLE_GDX}" "${ENABLE_TESTING}"
+          echo "image_tag=${DEFAULT_TAG}" >> "${GITHUB_OUTPUT}"
 
       - name: Setup Syft
         id: setup-syft
@@ -267,10 +287,11 @@ jobs:
         env:
           IMAGE_NAME: ${{ env.IMAGE_NAME }}
           PLATFORM: ${{ matrix.platform }}
+          TESTING: ${{ matrix.testing }}
           DIGEST: ${{ steps.push.outputs.remote_image_digest }}
         run: |
           mkdir -p /tmp/outputs/digests
-          echo "${DIGEST}" > "/tmp/outputs/digests/${IMAGE_NAME}-${PLATFORM}.txt"
+          echo "${DIGEST}" > "/tmp/outputs/digests/${IMAGE_NAME}-${TESTING}-${PLATFORM}.txt"
 
       - name: Upload Output Artifacts
         if: ${{ inputs.publish }}
@@ -344,8 +365,8 @@ jobs:
         id: metadata
         with:
           tags: |
-            type=raw,value=lts
-            type=raw,value=lts-{{date 'YYYYMMDD'}}
+            type=raw,value=${{ needs.build_push.outputs.image_tag }}
+            type=raw,value=${{ needs.build_push.outputs.image_tag }}-{{date 'YYYYMMDD'}}
             type=raw,value=${{ env.CENTOS_VERSION }}
             type=raw,value=${{ env.CENTOS_VERSION }}.{{date 'YYYYMMDD'}}
             type=raw,value=${{ env.CENTOS_VERSION_NUMBER }}
@@ -450,7 +471,7 @@ jobs:
           echo "IMAGE=$IMAGE_REGISTRY/$IMAGE_NAME" >> $GITHUB_OUTPUT
 
   # Cosign throws errors when ran inside the Fedora container for one reason or another
-  # so we move this to another step in order to run on Ubuntu
+  # so we move this to another step in order to run on Ubuntu
   sign:
     needs: manifest
     if: github.event_name != 'pull_request'

@@ -11,8 +11,13 @@ dnf -y install centos-release-hyperscale-kernel
 dnf config-manager --set-disabled "centos-hyperscale,centos-hyperscale-kernel"
 dnf --enablerepo="centos-hyperscale" --enablerepo="centos-hyperscale-kernel" -y update kernel
 
-# The base images take super long to update, this just updates manually for now
+if [ "${ENABLE_TESTING}" == "1" ] ; then
+	# GNOME 48 backport COPR
+	dnf copr enable -y "@centoshyperscale/c${MAJOR_VERSION_NUMBER}s-gnome-48"
+fi
+
 dnf -y install 'dnf-command(versionlock)'
+# This fixes a lot of skew issues on GDX because kernel-devel wont update then
 dnf versionlock add kernel kernel-devel kernel-devel-matched kernel-core kernel-modules kernel-modules-core kernel-modules-extra kernel-uki-virt
 
 dnf -y install "https://dl.fedoraproject.org/pub/epel/epel-release-latest-${MAJOR_VERSION_NUMBER}.noarch.rpm"
