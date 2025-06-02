@@ -15,6 +15,9 @@ if [ "${ENABLE_TESTING}" == "1" ] ; then
 	# GNOME 48 backport COPR
 	dnf copr enable -y "@centoshyperscale/c${MAJOR_VERSION_NUMBER}s-gnome-48"
         dnf -y install glib2
+  dnf copr enable -y jreilly1821/packages
+        dnf -y install xdg-desktop-portal xdg-desktop-portal-gnome
+  dnf copr disable -y jreilly1821/packages
 fi
 
 dnf -y install 'dnf-command(versionlock)'
